@@ -1,0 +1,72 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main, dev ]
+
+env:
+  APPLICATION_PORT: 8443
+
+jobs:
+  build-jar:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: |
+          ./gradlew clean
+          ./gradlew bootJar
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: application-jar
+          path: build/libs/
+          retention-days: 1
+
+  build-image-and-deploy:
+    needs: build-jar
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: application-jar
+          path: build/libs/
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+
+      - name: Deploy Container
+        run: |
+          docker stop ${{ github.event.repository.name }} || true
+          docker rm ${{ github.event.repository.name }}-old || true
+          docker container rename ${{ github.event.repository.name }} ${{ github.event.repository.name }}-old || true || echo "No container to rename"
+          docker run -d -e SPRING_PROFILES_ACTIVE=dev -p ${{ env.APPLICATION_PORT }}:8080 --name ${{ github.event.repository.name }} ghcr.io/${{ github.repository }}:latest
+
+      - name: Cleanup Docker images
+        run: docker image prune -a -f
