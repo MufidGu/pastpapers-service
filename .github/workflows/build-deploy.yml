@@ -1,61 +1,96 @@
-build-image-and-deploy:
-  needs: build-jar
-  runs-on: self-hosted
+name: Build and Deploy
 
-  steps:
-    - uses: actions/checkout@v4
+on:
+  push:
+    branches: [ main, dev ]
 
-    - name: Download JAR artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: application-jar
-        path: build/libs/
+env:
+  APPLICATION_PORT: 8443
 
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  build-jar:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
 
-    - name: Set Tag and Profile
-      id: vars
-      run: |
-        # Use branch name for the tag (e.g., 'main' or 'dev')
-        TAG=${GITHUB_REF##*/}
-        echo "tag=$TAG" >> $GITHUB_OUTPUT
-        
-        # Set Spring profile based on branch
-        if [[ "$TAG" == "main" ]]; then
-          echo "profile=prod" >> $GITHUB_OUTPUT
-        else
-          echo "profile=dev" >> $GITHUB_OUTPUT
-        fi
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
-    - name: Deploy Container
-      run: |
-        CONTAINER_NAME="${{ github.event.repository.name }}"
-        OLD_CONTAINER_NAME="${CONTAINER_NAME}-old"
-        
-        # Stop and remove the container from the last deployment, if it exists
-        docker stop $OLD_CONTAINER_NAME &>/dev/null && docker rm $OLD_CONTAINER_NAME &>/dev/null || echo "No previous 'old' container to remove."
-        
-        # Rename the current container to 'old', if it exists
-        docker rename $CONTAINER_NAME $OLD_CONTAINER_NAME &>/dev/null || echo "No running container to rename."
-        
-        docker run -d \
-          -e SPRING_PROFILES_ACTIVE=${{ steps.vars.outputs.profile }} \
-          -p ${{ env.APPLICATION_PORT }}:8080 \
-          --name $CONTAINER_NAME \
-          ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+      - name: Build with Gradle
+        run: |
+          ./gradlew clean
+          ./gradlew bootJar
 
-    - name: Cleanup Dangling Docker images
-      if: always()
-      run: docker image prune -f
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-jar
+          path: build/libs/
+          retention-days: 1
+
+  build-image-and-deploy:
+    needs: build-jar
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: application-jar
+          path: build/libs/
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Tag and Profile
+        id: vars
+        run: |
+          # Use branch name for the tag (e.g., 'main' or 'dev')
+          TAG=${GITHUB_REF##*/}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          
+          # Set Spring profile based on branch
+          if [[ "$TAG" == "main" ]]; then
+            echo "profile=prod" >> $GITHUB_OUTPUT
+          else
+            echo "profile=dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+
+      - name: Deploy Container
+        run: |
+          CONTAINER_NAME="${{ github.event.repository.name }}"
+          OLD_CONTAINER_NAME="${CONTAINER_NAME}-old"
+          
+          # Stop and remove the container from the last deployment, if it exists
+          docker stop $OLD_CONTAINER_NAME &>/dev/null && docker rm $OLD_CONTAINER_NAME &>/dev/null || echo "No previous 'old' container to remove."
+          
+          # Rename the current container to 'old', if it exists
+          docker rename $CONTAINER_NAME $OLD_CONTAINER_NAME &>/dev/null || echo "No running container to rename."
+          
+          docker run -d \
+            -e SPRING_PROFILES_ACTIVE=${{ steps.vars.outputs.profile }} \
+            -p ${{ env.APPLICATION_PORT }}:8080 \
+            --name $CONTAINER_NAME \
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+
+      - name: Cleanup Dangling Docker images
+        if: always()
+        run: docker image prune -f
