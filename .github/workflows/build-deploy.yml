@@ -67,12 +67,15 @@ jobs:
             echo "profile=dev" >> $GITHUB_OUTPUT
           fi
 
+          # Convert repository name to lowercase for Docker
+          echo "repo_lc=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+          tags: ghcr.io/${{ steps.vars.outputs.repo_lc }}:${{ steps.vars.outputs.tag }}
 
       - name: Deploy Container
         run: |
@@ -89,7 +92,7 @@ jobs:
             -e SPRING_PROFILES_ACTIVE=${{ steps.vars.outputs.profile }} \
             -p ${{ env.APPLICATION_PORT }}:8080 \
             --name $CONTAINER_NAME \
-            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.tag }}
+            ghcr.io/${{ steps.vars.outputs.repo_lc }}:${{ steps.vars.outputs.tag }}
 
       - name: Cleanup Dangling Docker images
         if: always()
