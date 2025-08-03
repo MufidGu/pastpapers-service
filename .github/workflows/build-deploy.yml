@@ -9,7 +9,8 @@ permissions:
   packages: write
 
 env:
-  APPLICATION_PORT: 8443
+  PROD_PORT: 8443
+  DEV_PORT: 8444
 
 jobs:
   build-jar:
@@ -27,9 +28,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: |
-          ./gradlew clean
-          ./gradlew bootJar
+        run: ./gradlew clean bootJar
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
@@ -42,8 +41,6 @@ jobs:
     needs: build-jar
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
-
       - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
@@ -65,11 +62,13 @@ jobs:
           
           if [[ "$TAG" == "main" ]]; then
             echo "profile=prod" >> $GITHUB_OUTPUT
+            echo "port=${{ env.PROD_PORT }}" >> $GITHUB_OUTPUT
           else
             echo "profile=dev" >> $GITHUB_OUTPUT
+            echo "port=${{ env.DEV_PORT }}" >> $GITHUB_OUTPUT
           fi
 
-          echo "repo_lc=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          echo "repo_lc=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -80,16 +79,20 @@ jobs:
 
       - name: Deploy Container
         run: |
-          CONTAINER_NAME="${{ github.event.repository.name }}"
+          CONTAINER_NAME="${{ github.event.repository.name }}-${{ steps.vars.outputs.profile }}"
           OLD_CONTAINER_NAME="${CONTAINER_NAME}-old"
           
-          docker stop $OLD_CONTAINER_NAME &>/dev/null && docker rm $OLD_CONTAINER_NAME &>/dev/null || echo "No previous 'old' container to remove."
+          # Cleanup old-old container
+          docker stop $OLD_CONTAINER_NAME &>/dev/null && docker rm $OLD_CONTAINER_NAME &>/dev/null || echo "No previous 'old' container."
           
-          docker rename $CONTAINER_NAME $OLD_CONTAINER_NAME &>/dev/null || echo "No running container to rename."
+          # Stop current container first
+          docker stop $CONTAINER_NAME &>/dev/null || echo "No running container to stop."
+          docker rename $CONTAINER_NAME $OLD_CONTAINER_NAME &>/dev/null || echo "No container to rename."
           
+          # Start new container
           docker run -d \
             -e SPRING_PROFILES_ACTIVE=${{ steps.vars.outputs.profile }} \
-            -p ${{ env.APPLICATION_PORT }}:8080 \
+            -p ${{ steps.vars.outputs.port }}:8080 \
             --name $CONTAINER_NAME \
             ghcr.io/${{ steps.vars.outputs.repo_lc }}:${{ steps.vars.outputs.tag }}
 
