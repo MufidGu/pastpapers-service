@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main, dev ]
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   APPLICATION_PORT: 8443
 
@@ -56,18 +60,15 @@ jobs:
       - name: Set Tag and Profile
         id: vars
         run: |
-          # Use branch name for the tag (e.g., 'main' or 'dev')
           TAG=${GITHUB_REF##*/}
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           
-          # Set Spring profile based on branch
           if [[ "$TAG" == "main" ]]; then
             echo "profile=prod" >> $GITHUB_OUTPUT
           else
             echo "profile=dev" >> $GITHUB_OUTPUT
           fi
 
-          # Convert repository name to lowercase for Docker
           echo "repo_lc=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
@@ -82,10 +83,8 @@ jobs:
           CONTAINER_NAME="${{ github.event.repository.name }}"
           OLD_CONTAINER_NAME="${CONTAINER_NAME}-old"
           
-          # Stop and remove the container from the last deployment, if it exists
           docker stop $OLD_CONTAINER_NAME &>/dev/null && docker rm $OLD_CONTAINER_NAME &>/dev/null || echo "No previous 'old' container to remove."
           
-          # Rename the current container to 'old', if it exists
           docker rename $CONTAINER_NAME $OLD_CONTAINER_NAME &>/dev/null || echo "No running container to rename."
           
           docker run -d \
