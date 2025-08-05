@@ -14,6 +14,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +32,8 @@ public class UniversityControllerTest {
 
     @Test
     void should_add_university() throws Exception {
+        universities.clear();
+
         mockMvc.perform(
                 post("/university/add")
                         .contentType("application/json")
@@ -44,6 +48,39 @@ public class UniversityControllerTest {
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.shortName").value("MIT"))
                 .andExpect(jsonPath("$.fullName").value("Massachusetts Institute of Technology"));
+    }
+
+    @Test
+    void should_return_university() throws Exception {
+        universities.clear();
+        universities.save(new University("MIT", "Massachusetts Institute of Technology"));
+
+        mockMvc.perform(
+                        get("/university/all")
+                                .contentType("application/json")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].shortName").value("MIT"))
+                .andExpect(jsonPath("$[0].fullName").value("Massachusetts Institute of Technology"));
+    }
+
+    @Test
+    void should_return_three_universities() throws Exception {
+        universities.clear();
+        universities.save(new University("MIT", "Massachusetts Institute of Technology"));
+        universities.save(new University("Stanford", "Stanford University"));
+        universities.save(new University("Harvard", "Harvard University"));
+
+        mockMvc.perform(
+                get("/university/all")
+                        .contentType("application/json")
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", hasSize(3)));
+
     }
 
     @TestConfiguration
