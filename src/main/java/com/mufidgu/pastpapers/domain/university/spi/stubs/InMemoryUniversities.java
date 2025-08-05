@@ -5,6 +5,7 @@ import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.Stub;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Stub
@@ -22,5 +23,9 @@ public class InMemoryUniversities implements Universities {
                 .filter(u -> u.shortName().equals(shortName) && u.fullName().equals(fullName))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<University> getAll() {
+        return List.copyOf(universities.values());
     }
 }
