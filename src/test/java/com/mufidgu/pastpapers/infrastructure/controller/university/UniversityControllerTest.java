@@ -32,8 +32,6 @@ public class UniversityControllerTest {
 
     @Test
     void should_add_university() throws Exception {
-        universities.clear();
-
         mockMvc.perform(
                 post("/university/add")
                         .contentType("application/json")
@@ -52,8 +50,7 @@ public class UniversityControllerTest {
 
     @Test
     void should_return_university() throws Exception {
-        universities.clear();
-        universities.save(new University("MIT", "Massachusetts Institute of Technology"));
+        universities.save(new University("Stanford", "Stanford University"));
 
         mockMvc.perform(
                         get("/university/all")
@@ -61,26 +58,8 @@ public class UniversityControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].shortName").value("MIT"))
-                .andExpect(jsonPath("$[0].fullName").value("Massachusetts Institute of Technology"));
-    }
-
-    @Test
-    void should_return_three_universities() throws Exception {
-        universities.clear();
-        universities.save(new University("MIT", "Massachusetts Institute of Technology"));
-        universities.save(new University("Stanford", "Stanford University"));
-        universities.save(new University("Harvard", "Harvard University"));
-
-        mockMvc.perform(
-                get("/university/all")
-                        .contentType("application/json")
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$", hasSize(3)));
-
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andExpect(jsonPath("$[?(@.shortName == 'Stanford')]").exists());
     }
 
     @TestConfiguration

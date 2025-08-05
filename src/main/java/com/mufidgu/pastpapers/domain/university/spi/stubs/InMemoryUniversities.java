@@ -13,10 +13,6 @@ public class InMemoryUniversities implements Universities {
 
     HashMap<UUID, University> universities = new HashMap<>();
 
-    public void clear() {
-        universities.clear();
-    }
-
     public University save(University university) {
         universities.put(university.id(), university);
         return university;
