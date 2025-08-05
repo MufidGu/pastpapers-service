@@ -5,5 +5,5 @@ import com.mufidgu.pastpapers.domain.university.University;
 import java.util.List;
 
 public interface FetchUniversities {
-    List<University> fetchUniversities();
+    List<University> fetchAll();
 }
