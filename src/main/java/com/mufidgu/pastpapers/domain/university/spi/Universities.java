@@ -9,6 +9,6 @@ public interface Universities {
     University save(University university);
     University findByShortNameAndFullName(String shortName, String fullName);
     List<University> getAll();
-    University findById(String id);
+    University findById(UUID id);
     void delete(UUID id);
 }

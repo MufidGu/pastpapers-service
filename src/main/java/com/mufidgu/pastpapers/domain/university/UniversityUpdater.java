@@ -17,7 +17,7 @@ public class UniversityUpdater implements UpdateUniversity {
 
     public University update(UUID id, String shortName, String fullName) {
         // TODO: better exception handling
-        if (universities.findById(id.toString()) == null) {
+        if (universities.findById(id) == null) {
             throw new IllegalArgumentException("University not found with id: " + id);
         }
         if (universities.findByShortNameAndFullName(shortName, fullName) != null) {

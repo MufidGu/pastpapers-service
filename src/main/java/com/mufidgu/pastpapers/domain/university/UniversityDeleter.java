@@ -16,7 +16,7 @@ public class UniversityDeleter implements DeleteUniversity {
     }
 
     public void delete(UUID id) {
-        if (universities.findById(id.toString()) == null) {
+        if (universities.findById(id) == null) {
             throw new IllegalArgumentException("University with id " + id + " does not exist.");
         }
         universities.delete(id);

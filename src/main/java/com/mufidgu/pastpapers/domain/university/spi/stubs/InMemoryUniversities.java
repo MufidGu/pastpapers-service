@@ -29,11 +29,8 @@ public class InMemoryUniversities implements Universities {
         return List.copyOf(universities.values());
     }
 
-    public University findById(String id) {
-        return universities.values().stream()
-                .filter(u -> u.id().toString().equals(id))
-                .findFirst()
-                .orElse(null);
+    public University findById(UUID id) {
+        return universities.get(id);
     }
 
     public void delete(UUID id) {
