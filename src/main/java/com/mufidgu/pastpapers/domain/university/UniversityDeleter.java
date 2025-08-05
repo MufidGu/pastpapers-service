@@ -11,7 +11,7 @@ public class UniversityDeleter implements DeleteUniversity {
 
     private final Universities universities;
 
-    public  UniversityDeleter(Universities universities) {
+    public UniversityDeleter(Universities universities) {
         this.universities = universities;
     }
 

@@ -87,7 +87,6 @@ public class UniversityControllerTest {
 
         mockMvc.perform(
                 delete("/university/delete?universityId=" + university.id())
-                        .contentType("application/json")
         )
                 .andExpect(status().isOk());
 
