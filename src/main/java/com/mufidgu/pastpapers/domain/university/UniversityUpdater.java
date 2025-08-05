@@ -15,17 +15,16 @@ public class UniversityUpdater implements UpdateUniversity {
         this.universities = universities;
     }
 
-    public University updateUniversity(String idString, String shortName, String fullName) {
+    public University update(UUID id, String shortName, String fullName) {
         // TODO: better exception handling
-        if (universities.findById(idString) == null) {
-            throw new IllegalArgumentException("University not found with id: " + idString);
+        if (universities.findById(id.toString()) == null) {
+            throw new IllegalArgumentException("University not found with id: " + id);
         }
         if (universities.findByShortNameAndFullName(shortName, fullName) != null) {
             throw new IllegalArgumentException("University with the same short name and full name already exists");
         }
 
         // TODO: Revisit this when adding database to project
-        UUID id = UUID.fromString(idString);
         University university = new University(id, shortName, fullName);
         universities.save(university);
 

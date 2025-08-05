@@ -2,6 +2,8 @@ package com.mufidgu.pastpapers.domain.university.api;
 
 import com.mufidgu.pastpapers.domain.university.University;
 
+import java.util.UUID;
+
 public interface UpdateUniversity {
-    University updateUniversity(String id, String shortName, String fullName);
+    University update(UUID id, String shortName, String fullName);
 }

@@ -13,7 +13,7 @@ public class UniversityAdder implements AddUniversity {
         this.universities = universities;
     }
 
-    public University addUniversity(String shortName, String fullName) {
+    public University add(String shortName, String fullName) {
         var university = new University(shortName, fullName);
         if (universities.findByShortNameAndFullName(shortName, fullName) != null) {
             throw new IllegalArgumentException("University already exists."); // TODO: handle this properly

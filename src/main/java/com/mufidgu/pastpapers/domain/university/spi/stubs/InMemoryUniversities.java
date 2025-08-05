@@ -35,4 +35,8 @@ public class InMemoryUniversities implements Universities {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void delete(UUID id) {
+        universities.remove(id);
+    }
 }

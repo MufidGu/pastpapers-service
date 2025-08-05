@@ -80,6 +80,23 @@ public class UniversityControllerTest {
                 .andExpect(jsonPath("$.fullName").value("Harvard University Updated"));
     }
 
+
+    @Test
+    void should_delete_university() throws Exception {
+        University university = universities.save(new University("Yale", "Yale University"));
+
+        mockMvc.perform(
+                delete("/university/delete?universityId=" + university.id())
+                        .contentType("application/json")
+        )
+                .andExpect(status().isOk());
+
+        // Verify that the university is deleted
+        mockMvc.perform(get("/university/all"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[?(@.shortName == 'Yale')]").doesNotExist());
+    }
+
     @TestConfiguration
     @ComponentScan(
             basePackageClasses = {University.class},
