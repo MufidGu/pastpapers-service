@@ -1,7 +1,7 @@
 package com.mufidgu.pastpapers.infrastructure.controller.university;
 
-import com.mufidgu.pastpapers.domain.university.UniversityDeleter;
 import com.mufidgu.pastpapers.domain.university.api.AddUniversity;
+import com.mufidgu.pastpapers.domain.university.api.DeleteUniversity;
 import com.mufidgu.pastpapers.domain.university.api.FetchUniversities;
 import com.mufidgu.pastpapers.domain.university.api.UpdateUniversity;
 import jakarta.validation.Valid;
@@ -21,13 +21,13 @@ public class UniversityController {
     private final AddUniversity universityAdder;
     private final FetchUniversities universityFetcher;
     private final UpdateUniversity universityUpdater;
-    private final UniversityDeleter universityDeleter;
+    private final DeleteUniversity universityDeleter;
 
     public UniversityController(
             AddUniversity universityAdder,
             FetchUniversities universityFetcher,
             UpdateUniversity universityUpdater,
-            UniversityDeleter universityDeleter) {
+            DeleteUniversity universityDeleter) {
         this.universityAdder = universityAdder;
         this.universityFetcher = universityFetcher;
         this.universityUpdater = universityUpdater;
