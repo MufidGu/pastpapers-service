@@ -18,7 +18,7 @@ public class InMemoryUniversities implements Universities {
         return university;
     }
 
-    public University getByShortNameAndFullName(String shortName, String fullName) {
+    public University findByShortNameAndFullName(String shortName, String fullName) {
         return universities.values().stream()
                 .filter(u -> u.shortName().equals(shortName) && u.fullName().equals(fullName))
                 .findFirst()
@@ -27,5 +27,12 @@ public class InMemoryUniversities implements Universities {
 
     public List<University> getAll() {
         return List.copyOf(universities.values());
+    }
+
+    public University findById(String id) {
+        return universities.values().stream()
+                .filter(u -> u.id().toString().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

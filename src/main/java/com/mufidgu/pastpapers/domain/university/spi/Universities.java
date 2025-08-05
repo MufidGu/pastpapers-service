@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface Universities {
     University save(University university);
-    University getByShortNameAndFullName(String shortName, String fullName);
+    University findByShortNameAndFullName(String shortName, String fullName);
     List<University> getAll();
+    University findById(String id);
 }

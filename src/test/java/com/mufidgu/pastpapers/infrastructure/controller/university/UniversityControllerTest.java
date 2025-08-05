@@ -14,9 +14,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,6 +58,26 @@ public class UniversityControllerTest {
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(jsonPath("$[?(@.shortName == 'Stanford')]").exists());
+    }
+
+    @Test
+    void should_update_university() throws Exception {
+        University university = universities.save(new University("Harvard", "Harvard University"));
+
+        mockMvc.perform(
+                put("/university/update?universityId=" + university.id())
+                        .contentType("application/json")
+                        .content("""
+                                {
+                                    "shortName": "Harvard Updated",
+                                    "fullName": "Harvard University Updated"
+                                }
+                                """)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(university.id().toString()))
+                .andExpect(jsonPath("$.shortName").value("Harvard Updated"))
+                .andExpect(jsonPath("$.fullName").value("Harvard University Updated"));
     }
 
     @TestConfiguration
