@@ -1,7 +1,9 @@
 package com.mufidgu.pastpapers.infrastructure.controller.university;
 
+import java.util.UUID;
+
 public record UniversityResource(
-        java.util.UUID id,
+        UUID id,
         String shortName,
         String fullName
 ) {
