@@ -2,9 +2,11 @@ package com.mufidgu.pastpapers.domain.degree.spi.stubs;
 
 import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
+import ddd.Stub;
 
 import java.util.*;
 
+@Stub
 public class InMemoryDegrees implements Degrees {
 
     HashMap<UUID, Degree> degrees = new HashMap<>();
