@@ -13,13 +13,31 @@ env:
   DEV_PORT: 8444
 
 jobs:
-  build-jar:
+  run-tests:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run Tests
+        run: ./gradlew test
+
+  build-jar:
+    needs: run-tests
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
