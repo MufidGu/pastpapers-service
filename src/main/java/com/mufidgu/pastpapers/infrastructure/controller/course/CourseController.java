@@ -6,6 +6,7 @@ import com.mufidgu.pastpapers.domain.course.api.DeleteCourse;
 import com.mufidgu.pastpapers.domain.course.api.FetchCourse;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -56,7 +57,7 @@ public class CourseController {
     // TODO: Admin Only
     @PutMapping("/update")
     public ResponseEntity<CourseResource> updateCourse(
-            @Valid @RequestParam String courseId,
+            @NotBlank @RequestParam String courseId,
             @Valid @RequestBody CourseRequest request
     ) {
         UUID id = UUID.fromString(courseId);
@@ -78,7 +79,7 @@ public class CourseController {
 
     // TODO: Admin Only
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteCourse(@RequestParam String courseId) {
+    public ResponseEntity<Void> deleteCourse(@NotBlank @RequestParam String courseId) {
         UUID id = UUID.fromString(courseId);
         courseDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();

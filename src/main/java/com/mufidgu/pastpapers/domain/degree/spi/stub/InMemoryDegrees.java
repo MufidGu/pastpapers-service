@@ -12,7 +12,7 @@ import java.util.UUID;
 @Stub
 public class InMemoryDegrees implements Degrees {
 
-    HashMap<UUID, Degree> degrees = new HashMap<>();
+    private final HashMap<UUID, Degree> degrees = new HashMap<>();
 
     public Degree save(Degree degree) {
         degrees.put(degree.id(), degree);

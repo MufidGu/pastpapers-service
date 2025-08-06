@@ -12,7 +12,7 @@ import java.util.UUID;
 @Stub
 public class InMemoryUniversities implements Universities {
 
-    HashMap<UUID, University> universities = new HashMap<>();
+    private final HashMap<UUID, University> universities = new HashMap<>();
 
     public University save(University university) {
         universities.put(university.id(), university);
