@@ -17,12 +17,12 @@ public class UniversityUpdater implements UpdateUniversity {
 
     public University update(UUID id, String shortName, String fullName) {
         // TODO: better exception handling
-        if (universities.findById(id) == null) {
-            throw new IllegalArgumentException("University not found with id: " + id);
-        }
-        if (universities.findByShortNameAndFullName(shortName, fullName) != null) {
-            throw new IllegalArgumentException("University with the same short name and full name already exists");
-        }
+        universities.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("University does not exist.")
+        );
+        universities.findByShortNameAndFullName(shortName, fullName).ifPresent(u -> {
+            throw new IllegalArgumentException("University with the same short name and full name already exists.");
+        });
 
         // TODO: Revisit this when adding database to project
         University university = new University(id, shortName, fullName);
