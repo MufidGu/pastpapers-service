@@ -27,8 +27,10 @@ public class CourseUpdater implements UpdateCourse {
         Course existingCourse = courses.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Course does not exist"));
         courses.findByShortNameAndFullName(shortName, fullName)
-                .ifPresent(course -> {
-                    throw new IllegalArgumentException("Course with the same short name and full name already exists");
+                .ifPresent(c -> {
+                    if (!c.id().equals(existingCourse.id())) {
+                        throw new IllegalArgumentException("Course with the same short name and full name already exists");
+                    }
                 });
         degreeIds.forEach(degreeId -> {
             if (degrees.findById(degreeId).isEmpty()) {
