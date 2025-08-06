@@ -23,7 +23,9 @@ public class DegreeUpdater implements UpdateDegree {
         // TODO: better exception handling
         Degree degree = degrees.findById(id).orElseThrow(() -> new IllegalArgumentException("Degree does not exist"));
         degrees.findByShortNameAndFullName(shortName, fullName).ifPresent(d -> {
-            throw new IllegalArgumentException("Degree with the same short name and full name already exists");
+            if (!d.id().equals(degree.id())) {
+                throw new IllegalArgumentException("Degree with the same short name and full name already exists");
+            }
         });
         universities.forEach(universityId -> {
             if (this.universities.findById(universityId) == null) {
@@ -31,6 +33,7 @@ public class DegreeUpdater implements UpdateDegree {
             }
         });
 
+        // TODO: Revisit this when adding database to project
         return degrees.save(
                 new Degree(degree.id(), shortName, fullName, universities)
         );

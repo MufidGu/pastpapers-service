@@ -1,6 +1,5 @@
 package com.mufidgu.pastpapers.infrastructure.controller.university;
 
-import com.mufidgu.pastpapers.Application;
 import com.mufidgu.pastpapers.domain.university.University;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
@@ -31,15 +30,15 @@ public class UniversityControllerTest {
     @Test
     void should_add_university() throws Exception {
         mockMvc.perform(
-                post("/university/add")
-                        .contentType("application/json")
-                        .content("""
-                                {
-                                    "shortName": "MIT",
-                                    "fullName": "Massachusetts Institute of Technology"
-                                }
-                                """)
-        )
+                        post("/university/add")
+                                .contentType("application/json")
+                                .content("""
+                                        {
+                                            "shortName": "MIT",
+                                            "fullName": "Massachusetts Institute of Technology"
+                                        }
+                                        """)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.shortName").value("MIT"))
@@ -65,15 +64,15 @@ public class UniversityControllerTest {
         University university = universities.save(new University("Harvard", "Harvard University"));
 
         mockMvc.perform(
-                put("/university/update?universityId=" + university.id())
-                        .contentType("application/json")
-                        .content("""
-                                {
-                                    "shortName": "Harvard Updated",
-                                    "fullName": "Harvard University Updated"
-                                }
-                                """)
-        )
+                        put("/university/update?universityId=" + university.id())
+                                .contentType("application/json")
+                                .content("""
+                                        {
+                                            "shortName": "Harvard Updated",
+                                            "fullName": "Harvard University Updated"
+                                        }
+                                        """)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(university.id().toString()))
                 .andExpect(jsonPath("$.shortName").value("Harvard Updated"))
@@ -86,8 +85,8 @@ public class UniversityControllerTest {
         University university = universities.save(new University("Yale", "Yale University"));
 
         mockMvc.perform(
-                delete("/university/delete?universityId=" + university.id())
-        )
+                        delete("/university/delete?universityId=" + university.id())
+                )
                 .andExpect(status().isOk());
 
         // Verify that the university is deleted

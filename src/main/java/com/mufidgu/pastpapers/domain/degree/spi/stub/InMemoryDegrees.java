@@ -1,15 +1,18 @@
-package com.mufidgu.pastpapers.domain.degree.spi.stubs;
+package com.mufidgu.pastpapers.domain.degree.spi.stub;
 
 import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import ddd.Stub;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Stub
 public class InMemoryDegrees implements Degrees {
 
-    HashMap<UUID, Degree> degrees = new HashMap<>();
+    private final HashMap<UUID, Degree> degrees = new HashMap<>();
 
     public Degree save(Degree degree) {
         degrees.put(degree.id(), degree);
@@ -31,7 +34,7 @@ public class InMemoryDegrees implements Degrees {
     }
 
     public List<Degree> findAll() {
-        return new ArrayList<>(degrees.values());
+        return List.copyOf(degrees.values());
     }
 
 }

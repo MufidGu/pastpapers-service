@@ -21,7 +21,9 @@ public class UniversityUpdater implements UpdateUniversity {
                 () -> new IllegalArgumentException("University does not exist.")
         );
         universities.findByShortNameAndFullName(shortName, fullName).ifPresent(u -> {
-            throw new IllegalArgumentException("University with the same short name and full name already exists.");
+            if (!u.id().equals(id)) {
+                throw new IllegalArgumentException("University with the same short name and full name already exists.");
+            }
         });
 
         // TODO: Revisit this when adding database to project
