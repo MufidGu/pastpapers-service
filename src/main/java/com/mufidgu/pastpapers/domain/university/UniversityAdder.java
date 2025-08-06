@@ -14,10 +14,10 @@ public class UniversityAdder implements AddUniversity {
     }
 
     public University add(String shortName, String fullName) {
-        var university = new University(shortName, fullName);
-        if (universities.findByShortNameAndFullName(shortName, fullName) != null) {
+        universities.findByShortNameAndFullName(shortName, fullName).ifPresent(u -> {
             throw new IllegalArgumentException("University already exists."); // TODO: handle this properly
-        }
+        });
+        var university = new University(shortName, fullName);
         return universities.save(university);
     }
 
