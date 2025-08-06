@@ -40,10 +40,7 @@ public class DegreeController {
     // Test cases validation, Already Exists, University Does Not Exist
     @PostMapping("/add")
     public ResponseEntity<DegreeResource> addDegree(@Valid @RequestBody DegreeRequest request) {
-        List<UUID> universities = request.universityIds.stream()
-                .map(UUID::fromString)
-                .toList();
-        Degree degree = degreeAdder.add(request.shortName, request.fullName, universities);
+        Degree degree = degreeAdder.add(request.shortName, request.fullName, request.universityIds);
         return ResponseEntity.ok(new DegreeResource(
                 degree.id(),
                 degree.shortName(),
@@ -56,18 +53,15 @@ public class DegreeController {
     // Test cases validation, Degree/University Does Not Exist
     @PostMapping("/update")
     public ResponseEntity<DegreeResource> updateDegree(
-            @NotBlank String degreeId,
+            @RequestParam @NotBlank String degreeId,
             @Valid @RequestBody DegreeRequest request
     ) {
-        List<UUID> universities = request.universityIds.stream()
-                .map(UUID::fromString)
-                .toList();
         UUID id = UUID.fromString(degreeId);
         Degree degree = degreeUpdater.update(
                 id,
                 request.shortName,
                 request.fullName,
-                universities
+                request.universityIds
         );
         return ResponseEntity.ok(new DegreeResource(
                 degree.id(),
@@ -80,7 +74,7 @@ public class DegreeController {
     // TODO: Admin only
     // Test cases validation, Degree Does Not Exist
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteDegree(@NotBlank String degreeId) {
+    public ResponseEntity<Void> deleteDegree(@RequestParam @NotBlank String degreeId) {
         UUID id = UUID.fromString(degreeId);
         degreeDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();

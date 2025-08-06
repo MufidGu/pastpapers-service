@@ -15,5 +15,5 @@ public class DegreeRequest {
     @Length(min = 3, max = 100)
     public String fullName;
 
-    public List<String> universityIds;
+    public List<UUID> universityIds;
 }
