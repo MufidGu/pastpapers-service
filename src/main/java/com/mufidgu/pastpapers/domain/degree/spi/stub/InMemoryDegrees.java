@@ -1,4 +1,4 @@
-package com.mufidgu.pastpapers.domain.degree.spi.stubs;
+package com.mufidgu.pastpapers.domain.degree.spi.stub;
 
 import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
@@ -31,7 +31,7 @@ public class InMemoryDegrees implements Degrees {
     }
 
     public List<Degree> findAll() {
-        return new ArrayList<>(degrees.values());
+        return List.copyOf(degrees.values());
     }
 
 }

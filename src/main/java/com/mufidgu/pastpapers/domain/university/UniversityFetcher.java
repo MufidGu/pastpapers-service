@@ -16,6 +16,6 @@ public class UniversityFetcher implements FetchUniversity {
     private final Universities universities;
 
     public List<University> fetchAll() {
-        return universities.getAll();
+        return universities.findAll();
     }
 }

@@ -1,4 +1,4 @@
-package com.mufidgu.pastpapers.domain.university.spi.stubs;
+package com.mufidgu.pastpapers.domain.university.spi.stub;
 
 import com.mufidgu.pastpapers.domain.university.University;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
@@ -25,7 +25,7 @@ public class InMemoryUniversities implements Universities {
                 .findFirst();
     }
 
-    public List<University> getAll() {
+    public List<University> findAll() {
         return List.copyOf(universities.values());
     }
 

@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface Universities {
     University save(University university);
     Optional<University> findByShortNameAndFullName(String shortName, String fullName);
-    List<University> getAll();
+    List<University> findAll();
     Optional<University> findById(UUID id);
     void delete(UUID id);
 }
