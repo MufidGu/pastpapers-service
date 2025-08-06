@@ -1,13 +1,13 @@
 package com.mufidgu.pastpapers.domain.university;
 
-import com.mufidgu.pastpapers.domain.university.api.FetchUniversities;
+import com.mufidgu.pastpapers.domain.university.api.FetchUniversity;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
 
 import java.util.List;
 
 @DomainService
-public class UniversityFetcher implements FetchUniversities {
+public class UniversityFetcher implements FetchUniversity {
 
     public UniversityFetcher(Universities universities) {
         this.universities = universities;

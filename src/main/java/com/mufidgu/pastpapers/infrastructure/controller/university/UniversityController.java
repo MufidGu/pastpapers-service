@@ -2,7 +2,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.university;
 
 import com.mufidgu.pastpapers.domain.university.api.AddUniversity;
 import com.mufidgu.pastpapers.domain.university.api.DeleteUniversity;
-import com.mufidgu.pastpapers.domain.university.api.FetchUniversities;
+import com.mufidgu.pastpapers.domain.university.api.FetchUniversity;
 import com.mufidgu.pastpapers.domain.university.api.UpdateUniversity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,13 +19,13 @@ import java.util.UUID;
 public class UniversityController {
 
     private final AddUniversity universityAdder;
-    private final FetchUniversities universityFetcher;
+    private final FetchUniversity universityFetcher;
     private final UpdateUniversity universityUpdater;
     private final DeleteUniversity universityDeleter;
 
     public UniversityController(
             AddUniversity universityAdder,
-            FetchUniversities universityFetcher,
+            FetchUniversity universityFetcher,
             UpdateUniversity universityUpdater,
             DeleteUniversity universityDeleter) {
         this.universityAdder = universityAdder;
