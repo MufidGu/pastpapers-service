@@ -2,12 +2,14 @@ package com.mufidgu.pastpapers.domain.course.spi.stub;
 
 import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
+import ddd.Stub;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Stub
 public class InMemoryCourses implements Courses {
 
     HashMap<UUID, Course> courses = new HashMap<>();

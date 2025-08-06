@@ -9,11 +9,11 @@ import java.util.List;
 @DomainService
 public class UniversityFetcher implements FetchUniversity {
 
+    private final Universities universities;
+
     public UniversityFetcher(Universities universities) {
         this.universities = universities;
     }
-
-    private final Universities universities;
 
     public List<University> fetchAll() {
         return universities.findAll();

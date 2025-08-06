@@ -2,7 +2,6 @@ package com.mufidgu.pastpapers.domain.course;
 
 import com.mufidgu.pastpapers.domain.course.api.FetchCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
 
 import java.util.List;

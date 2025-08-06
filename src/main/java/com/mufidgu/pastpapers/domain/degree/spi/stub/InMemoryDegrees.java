@@ -4,7 +4,10 @@ import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import ddd.Stub;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Stub
 public class InMemoryDegrees implements Degrees {

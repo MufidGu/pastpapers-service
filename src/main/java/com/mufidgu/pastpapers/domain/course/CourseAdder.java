@@ -22,7 +22,7 @@ public class CourseAdder implements AddCourse {
         this.universities = universities;
     }
 
-    public Course addCourse(String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
+    public Course add(String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
         // TODO: better error handling
         courses.findByShortNameAndFullName(shortName, fullName)
                 .ifPresent(course -> {

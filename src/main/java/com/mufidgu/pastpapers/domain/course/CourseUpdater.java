@@ -19,7 +19,7 @@ public class CourseUpdater implements UpdateCourse {
         this.universities = universities;
     }
 
-    public Course updateCourse(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
+    public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
         // TODO: better error handling
         Course existingCourse = courses.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Course does not exist"));

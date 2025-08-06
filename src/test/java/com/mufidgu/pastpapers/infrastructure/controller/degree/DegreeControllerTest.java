@@ -17,9 +17,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,16 +49,16 @@ public class DegreeControllerTest {
     @Test
     void should_add_degree() throws Exception {
         mockMvc.perform(
-                post("/degree/add")
-                        .contentType("application/json")
-                        .content(String.format("""
-                                {
-                                    "shortName": "CS",
-                                    "fullName": "Computer Science",
-                                    "universityIds": ["%s"]
-                                }
-                                """, testUniversity.id()))
-        )
+                        post("/degree/add")
+                                .contentType("application/json")
+                                .content(String.format("""
+                                        {
+                                            "shortName": "CS",
+                                            "fullName": "Computer Science",
+                                            "universityIds": ["%s"]
+                                        }
+                                        """, testUniversity.id()))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.shortName").value("CS"))
@@ -72,9 +72,9 @@ public class DegreeControllerTest {
         degrees.save(new Degree("Math", "Mathematics", List.of(testUniversity.id())));
 
         mockMvc.perform(
-                get("/degree/all")
-                        .contentType("application/json")
-        )
+                        get("/degree/all")
+                                .contentType("application/json")
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isNotEmpty())
@@ -87,16 +87,16 @@ public class DegreeControllerTest {
         Degree degree = degrees.save(new Degree("Phys", "Physics", List.of(testUniversity.id())));
 
         mockMvc.perform(
-                post("/degree/update?degreeId=" + degree.id())
-                        .contentType("application/json")
-                        .content(String.format("""
-                                {
-                                    "shortName": "Physics",
-                                    "fullName": "Physics and Astronomy",
-                                    "universityIds": ["%s", "%s"]
-                                }
-                                """, testUniversity.id(), secondTestUniversity.id()))
-        )
+                        post("/degree/update?degreeId=" + degree.id())
+                                .contentType("application/json")
+                                .content(String.format("""
+                                        {
+                                            "shortName": "Physics",
+                                            "fullName": "Physics and Astronomy",
+                                            "universityIds": ["%s", "%s"]
+                                        }
+                                        """, testUniversity.id(), secondTestUniversity.id()))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(degree.id().toString()))
                 .andExpect(jsonPath("$.shortName").value("Physics"))
@@ -110,8 +110,8 @@ public class DegreeControllerTest {
         Degree degree = degrees.save(new Degree("Bio", "Biology", List.of(testUniversity.id())));
 
         mockMvc.perform(
-                post("/degree/delete?degreeId=" + degree.id())
-        )
+                        post("/degree/delete?degreeId=" + degree.id())
+                )
                 .andExpect(status().isOk());
 
         // Verify that the degree is deleted

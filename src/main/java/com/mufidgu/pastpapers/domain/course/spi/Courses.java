@@ -8,8 +8,12 @@ import java.util.UUID;
 
 public interface Courses {
     Course save(Course course);
+
     void delete(UUID id);
+
     Optional<Course> findById(UUID id);
+
     Optional<Course> findByShortNameAndFullName(String shortName, String fullName);
+
     List<Course> findAll();
 }
