@@ -2,6 +2,7 @@ package com.mufidgu.pastpapers.domain.course;
 
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
+import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
 
@@ -12,10 +13,12 @@ import java.util.UUID;
 public class CourseUpdater implements UpdateCourse {
 
     private final Courses courses;
+    private final Degrees degrees;
     private final Universities universities;
 
-    public CourseUpdater(Courses courses, Universities universities) {
+    public CourseUpdater(Courses courses, Degrees degrees, Universities universities) {
         this.courses = courses;
+        this.degrees = degrees;
         this.universities = universities;
     }
 
@@ -28,7 +31,7 @@ public class CourseUpdater implements UpdateCourse {
                     throw new IllegalArgumentException("Course with the same short name and full name already exists");
                 });
         degreeIds.forEach(degreeId -> {
-            if (universities.findById(degreeId).isEmpty()) {
+            if (degrees.findById(degreeId).isEmpty()) {
                 throw new IllegalArgumentException("Degree with ID " + degreeId + " does not exist");
             }
         });

@@ -6,6 +6,7 @@ import com.mufidgu.pastpapers.domain.course.api.DeleteCourse;
 import com.mufidgu.pastpapers.domain.course.api.FetchCourse;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +81,7 @@ public class CourseController {
     public ResponseEntity<Void> deleteCourse(@RequestParam String courseId) {
         UUID id = UUID.fromString(courseId);
         courseDeleter.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // TODO: Registered Users Only
