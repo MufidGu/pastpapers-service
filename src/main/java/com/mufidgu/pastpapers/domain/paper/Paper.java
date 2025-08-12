@@ -1,0 +1,51 @@
+package com.mufidgu.pastpapers.domain.paper;
+
+import com.mufidgu.pastpapers.domain.paper.enums.Season;
+import com.mufidgu.pastpapers.domain.paper.enums.Shift;
+import com.mufidgu.pastpapers.domain.paper.enums.Term;
+
+import java.util.Date;
+import java.util.UUID;
+
+public record Paper(
+        UUID id,
+        UUID instructorId,
+        UUID courseId,
+        Term term,
+        UUID universityId,
+        UUID degreeId,
+        Shift shift,
+        Integer semester,
+        Character section,
+        Date year,
+        Season season,
+        Date date
+) {
+    public Paper(UUID instructorId,
+                 UUID courseId,
+                 Term term,
+                 UUID universityId,
+                 UUID degreeId,
+                 Shift shift,
+                 Integer semester,
+                 Character section,
+                 Date year,
+                 Season season,
+                 Date date
+    ) {
+        this(
+                UUID.randomUUID(),
+                instructorId,
+                courseId,
+                term,
+                universityId,
+                degreeId,
+                shift,
+                semester,
+                section,
+                year,
+                season,
+                date
+        );
+    }
+}
