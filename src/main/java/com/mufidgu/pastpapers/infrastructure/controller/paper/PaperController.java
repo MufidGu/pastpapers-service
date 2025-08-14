@@ -4,6 +4,7 @@ import com.mufidgu.pastpapers.domain.paper.api.DownloadPaper;
 import com.mufidgu.pastpapers.domain.paper.api.UploadPaper;
 import com.mufidgu.pastpapers.infrastructure.annotation.FileTypeRestriction;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -19,11 +20,15 @@ import java.util.UUID;
 @Validated
 @RestController
 @RequestMapping("/paper")
-@RequiredArgsConstructor
 public class PaperController {
 
     private final UploadPaper paperUploader;
     private final DownloadPaper downloadPaper;
+
+    public PaperController(UploadPaper paperUploader, DownloadPaper downloadPaper) {
+        this.paperUploader = paperUploader;
+        this.downloadPaper = downloadPaper;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> addPaper(
@@ -36,12 +41,12 @@ public class PaperController {
                             MediaType.IMAGE_PNG_VALUE
                     }
             )
-            @RequestPart(name = "file")
-            MultipartFile file
+            @RequestPart(name = "file") MultipartFile file
     ) {
         try {
             UUID paperId = paperUploader.uploadPaper(
-                    file.getBytes()
+                    file.getInputStream(),
+                    file.getOriginalFilename()
             );
             return ResponseEntity.ok(paperId.toString());
         } catch (IOException e) {
@@ -50,8 +55,11 @@ public class PaperController {
         }
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> downloadPaper(@PathVariable UUID id) {
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadPaper(
+            @NotBlank @RequestParam String paperId
+    ) {
+        UUID id = UUID.fromString(paperId);
         return ResponseEntity.ok().body(
                 downloadPaper.downloadPaper(id)
         );

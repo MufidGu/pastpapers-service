@@ -19,7 +19,8 @@ public record Paper(
         Character section,
         Date year,
         Season season,
-        Date date
+        Date date,
+        String fileName
 ) {
     public Paper(UUID instructorId,
                  UUID courseId,
@@ -31,7 +32,8 @@ public record Paper(
                  Character section,
                  Date year,
                  Season season,
-                 Date date
+                 Date date,
+                 String fileName
     ) {
         this(
                 UUID.randomUUID(),
@@ -45,7 +47,8 @@ public record Paper(
                 section,
                 year,
                 season,
-                date
+                date,
+                fileName
         );
     }
 }
