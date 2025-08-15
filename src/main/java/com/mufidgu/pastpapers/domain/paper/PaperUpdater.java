@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.domain.paper;
 import com.mufidgu.pastpapers.domain.paper.api.UpdatePaper;
 import com.mufidgu.pastpapers.domain.paper.enums.Season;
 import com.mufidgu.pastpapers.domain.paper.enums.Shift;
-import com.mufidgu.pastpapers.domain.paper.enums.Term;
+import com.mufidgu.pastpapers.domain.paper.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
 import ddd.DomainService;
 
@@ -23,13 +23,13 @@ public class PaperUpdater implements UpdatePaper {
             UUID id,
             UUID instructorId,
             UUID courseId,
-            Term term,
+            Type type,
             UUID universityId,
             UUID degreeId,
             Shift shift,
             Integer semester,
             Character section,
-            Date year,
+            Integer year,
             Season season,
             Date date
     ) {
@@ -40,7 +40,7 @@ public class PaperUpdater implements UpdatePaper {
                 orignalPaper.id(),
                 instructorId,
                 courseId,
-                term,
+                type,
                 universityId,
                 degreeId,
                 shift,

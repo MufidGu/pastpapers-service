@@ -2,7 +2,7 @@ package com.mufidgu.pastpapers.domain.paper;
 
 import com.mufidgu.pastpapers.domain.paper.enums.Season;
 import com.mufidgu.pastpapers.domain.paper.enums.Shift;
-import com.mufidgu.pastpapers.domain.paper.enums.Term;
+import com.mufidgu.pastpapers.domain.paper.enums.Type;
 
 import java.util.Date;
 import java.util.UUID;
@@ -11,26 +11,26 @@ public record Paper(
         UUID id,
         UUID instructorId,
         UUID courseId,
-        Term term,
+        Type type,
         UUID universityId,
         UUID degreeId,
         Shift shift,
         Integer semester,
         Character section,
-        Date year,
+        Integer year,
         Season season,
         Date date,
         String fileName
 ) {
     public Paper(UUID instructorId,
                  UUID courseId,
-                 Term term,
+                 Type type,
                  UUID universityId,
                  UUID degreeId,
                  Shift shift,
                  Integer semester,
                  Character section,
-                 Date year,
+                 Integer year,
                  Season season,
                  Date date,
                  String fileName
@@ -39,7 +39,7 @@ public record Paper(
                 UUID.randomUUID(),
                 instructorId,
                 courseId,
-                term,
+                type,
                 universityId,
                 degreeId,
                 shift,

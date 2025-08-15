@@ -2,12 +2,14 @@ package com.mufidgu.pastpapers.domain.paper.spi.stub;
 
 import com.mufidgu.pastpapers.domain.paper.Paper;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
+import ddd.Stub;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Stub
 public class InMemoryPapers implements Papers {
 
     HashMap<UUID, Paper> papers = new HashMap<>();

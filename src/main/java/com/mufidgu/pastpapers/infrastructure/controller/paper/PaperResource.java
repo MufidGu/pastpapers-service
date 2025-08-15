@@ -2,7 +2,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.paper;
 
 import com.mufidgu.pastpapers.domain.paper.enums.Season;
 import com.mufidgu.pastpapers.domain.paper.enums.Shift;
-import com.mufidgu.pastpapers.domain.paper.enums.Term;
+import com.mufidgu.pastpapers.domain.paper.enums.Type;
 
 import java.util.Date;
 import java.util.UUID;
@@ -11,13 +11,13 @@ public record PaperResource(
         UUID id,
         UUID instructorId,
         UUID courseId,
-        Term term,
+        Type type,
         UUID universityId,
         UUID degreeId,
         Shift shift,
         Integer semester,
         Character section,
-        Date year,
+        Integer year,
         Season season,
         Date date
 ) {

@@ -2,10 +2,12 @@ package com.mufidgu.pastpapers.domain.paper.spi.stub;
 
 import com.mufidgu.pastpapers.domain.paper.File;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
+import ddd.Stub;
 
 import java.io.IOException;
 import java.util.HashMap;
 
+@Stub
 public class InMemoryFileStorage implements FileStorage {
     HashMap<String, File> files = new HashMap<>();
 
