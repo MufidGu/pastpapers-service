@@ -33,11 +33,11 @@ public class PaperUpdater implements UpdatePaper {
             Season season,
             Date date
     ) {
-        Paper orignalPaper = papers.findById(id)
+        Paper originalPaper = papers.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Paper does not exist"));
 
         Paper updatedPaper = new Paper(
-                orignalPaper.id(),
+                originalPaper.id(),
                 instructorId,
                 courseId,
                 type,
@@ -49,7 +49,7 @@ public class PaperUpdater implements UpdatePaper {
                 year,
                 season,
                 date,
-                orignalPaper.fileName()
+                originalPaper.fileName()
         );
 
         updatedPaper = papers.save(updatedPaper);

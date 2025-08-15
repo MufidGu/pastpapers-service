@@ -25,7 +25,7 @@ public class PaperDeleter implements DeletePaper {
                 .orElseThrow(() -> new IllegalArgumentException("Paper does not exist"));
 
         try {
-            fileStorage.delete(paper.fileName());
+            fileStorage.delete(paper.id().toString());
         } catch (Exception e) {
             log.error("Failed to delete file for paper {}: {}", paper, e.getMessage());
         }
