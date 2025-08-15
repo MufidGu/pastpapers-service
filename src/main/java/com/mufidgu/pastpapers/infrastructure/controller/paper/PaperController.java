@@ -1,11 +1,11 @@
 package com.mufidgu.pastpapers.infrastructure.controller.paper;
 
-import com.mufidgu.pastpapers.domain.paper.api.DownloadPaper;
-import com.mufidgu.pastpapers.domain.paper.api.UploadPaper;
+import com.mufidgu.pastpapers.domain.paper.File;
+import com.mufidgu.pastpapers.domain.paper.Paper;
+import com.mufidgu.pastpapers.domain.paper.api.*;
 import com.mufidgu.pastpapers.infrastructure.annotation.FileTypeRestriction;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -23,18 +24,30 @@ import java.util.UUID;
 public class PaperController {
 
     private final UploadPaper paperUploader;
-    private final DownloadPaper downloadPaper;
+    private final DownloadPaper paperDownloader;
+    private final UpdatePaper paperUpdater;
+    private final DeletePaper paperDeleter;
+    private final ListPaper paperLister;
 
-    public PaperController(UploadPaper paperUploader, DownloadPaper downloadPaper) {
+    public PaperController(
+            UploadPaper paperUploader,
+            DownloadPaper paperDownloader,
+            UpdatePaper paperUpdater,
+            DeletePaper paperDeleter,
+            ListPaper paperLister
+    ) {
         this.paperUploader = paperUploader;
-        this.downloadPaper = downloadPaper;
+        this.paperDownloader = paperDownloader;
+        this.paperUpdater = paperUpdater;
+        this.paperDeleter = paperDeleter;
+        this.paperLister = paperLister;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<String> addPaper(
             @Valid
             @FileTypeRestriction(
-                    acceptedTypes =  {
+                    acceptedTypes = {
                             MediaType.TEXT_PLAIN_VALUE,
                             MediaType.APPLICATION_PDF_VALUE,
                             MediaType.IMAGE_JPEG_VALUE,
@@ -56,12 +69,81 @@ public class PaperController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadPaper(
+    public ResponseEntity<File> downloadPaper(
             @NotBlank @RequestParam String paperId
     ) {
         UUID id = UUID.fromString(paperId);
         return ResponseEntity.ok().body(
-                downloadPaper.downloadPaper(id)
+                paperDownloader.downloadPaper(id)
         );
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<PaperResource> updatePaper(
+            @NotBlank @RequestParam String paperId,
+            @Valid @RequestBody PaperRequest request
+    ) {
+        UUID id = UUID.fromString(paperId);
+        Paper paper = paperUpdater.update(
+                id,
+                request.instructorId,
+                request.courseId,
+                request.term,
+                request.universityId,
+                request.degreeId,
+                request.shift,
+                request.semester,
+                request.section,
+                request.year,
+                request.season,
+                request.date
+        );
+        return ResponseEntity.ok(
+                new PaperResource(
+                        paper.id(),
+                        paper.instructorId(),
+                        paper.courseId(),
+                        paper.term(),
+                        paper.universityId(),
+                        paper.degreeId(),
+                        paper.shift(),
+                        paper.semester(),
+                        paper.section(),
+                        paper.year(),
+                        paper.season(),
+                        paper.date()
+                )
+        );
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deletePaper(
+            @NotBlank @RequestParam String paperId
+    ) {
+        UUID id = UUID.fromString(paperId);
+        paperDeleter.delete(id);
+        return ResponseEntity.ok("Paper deleted successfully");
+    }
+
+
+    @GetMapping("/list")
+    public ResponseEntity<List<PaperResource>> listPapers() {
+        List<Paper> papers = paperLister.listAll();
+        List<PaperResource> paperResources = papers.stream()
+                .map(paper -> new PaperResource(
+                        paper.id(),
+                        paper.instructorId(),
+                        paper.courseId(),
+                        paper.term(),
+                        paper.universityId(),
+                        paper.degreeId(),
+                        paper.shift(),
+                        paper.semester(),
+                        paper.section(),
+                        paper.year(),
+                        paper.season(),
+                        paper.date()
+                )).toList();
+        return ResponseEntity.ok(paperResources);
     }
 }

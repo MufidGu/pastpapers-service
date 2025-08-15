@@ -4,6 +4,7 @@ import com.mufidgu.pastpapers.domain.paper.Paper;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,12 +21,16 @@ public class InMemoryPapers implements Papers {
         return Optional.ofNullable(papers.get(id));
     }
 
-    public void deleteById(UUID id) {
+    public void delete(UUID id) {
         papers.remove(id);
     }
 
     public Paper update(Paper paper) {
         papers.put(paper.id(), paper);
         return paper;
+    }
+
+    public List<Paper> findAll() {
+        return papers.values().stream().toList();
     }
 }

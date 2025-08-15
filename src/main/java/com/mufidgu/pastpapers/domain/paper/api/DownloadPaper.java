@@ -1,7 +1,9 @@
 package com.mufidgu.pastpapers.domain.paper.api;
 
+import com.mufidgu.pastpapers.domain.paper.File;
+
 import java.util.UUID;
 
 public interface DownloadPaper {
-    byte[] downloadPaper(UUID id);
+    File downloadPaper(UUID id);
 }
