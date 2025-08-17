@@ -4,20 +4,17 @@ import com.mufidgu.pastpapers.domain.paper.api.UploadPaper;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.io.InputStream;
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class PaperUploader implements UploadPaper {
 
     private final Papers papers;
     private final FileStorage fileStorage;
-
-    public PaperUploader(Papers papers, FileStorage fileStorage) {
-        this.papers = papers;
-        this.fileStorage = fileStorage;
-    }
 
     public UUID uploadPaper(InputStream stream, String originalFilename) {
         try {

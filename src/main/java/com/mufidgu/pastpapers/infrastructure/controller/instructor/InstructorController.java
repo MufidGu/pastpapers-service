@@ -7,6 +7,7 @@ import com.mufidgu.pastpapers.domain.instructor.api.FetchInstructor;
 import com.mufidgu.pastpapers.domain.instructor.api.UpdateInstructor;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/instructor")
 public class InstructorController {
 
@@ -23,17 +25,6 @@ public class InstructorController {
     private final UpdateInstructor instructorUpdater;
     private final DeleteInstructor instructorDeleter;
     private final FetchInstructor instructorFetcher;
-
-    public InstructorController(
-            AddInstructor instructorAdder,
-            UpdateInstructor instructorUpdater,
-            DeleteInstructor instructorDeleter,
-            FetchInstructor instructorFetcher) {
-        this.instructorAdder = instructorAdder;
-        this.instructorUpdater = instructorUpdater;
-        this.instructorDeleter = instructorDeleter;
-        this.instructorFetcher = instructorFetcher;
-    }
 
     // TODO: Admin Only
     @PostMapping("/add")

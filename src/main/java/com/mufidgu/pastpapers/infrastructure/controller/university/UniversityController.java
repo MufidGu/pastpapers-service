@@ -6,6 +6,7 @@ import com.mufidgu.pastpapers.domain.university.api.FetchUniversity;
 import com.mufidgu.pastpapers.domain.university.api.UpdateUniversity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/university")
 public class UniversityController {
 
@@ -22,17 +24,6 @@ public class UniversityController {
     private final FetchUniversity universityFetcher;
     private final UpdateUniversity universityUpdater;
     private final DeleteUniversity universityDeleter;
-
-    public UniversityController(
-            AddUniversity universityAdder,
-            FetchUniversity universityFetcher,
-            UpdateUniversity universityUpdater,
-            DeleteUniversity universityDeleter) {
-        this.universityAdder = universityAdder;
-        this.universityFetcher = universityFetcher;
-        this.universityUpdater = universityUpdater;
-        this.universityDeleter = universityDeleter;
-    }
 
     // TODO: Admin Only
     // Test Cases: Validation, Duplicate Short Name and Full Name,

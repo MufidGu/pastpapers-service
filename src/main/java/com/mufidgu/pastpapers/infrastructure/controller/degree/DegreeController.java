@@ -7,6 +7,7 @@ import com.mufidgu.pastpapers.domain.degree.api.FetchDegree;
 import com.mufidgu.pastpapers.domain.degree.api.UpdateDegree;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/degree")
 public class DegreeController {
 
@@ -23,17 +25,6 @@ public class DegreeController {
     private final FetchDegree degreeFetcher;
     private final UpdateDegree degreeUpdater;
     private final DeleteDegree degreeDeleter;
-
-    public DegreeController(
-            AddDegree degreeAdder,
-            FetchDegree degreeFetcher,
-            UpdateDegree degreeUpdater,
-            DeleteDegree degreeDeleter) {
-        this.degreeAdder = degreeAdder;
-        this.degreeFetcher = degreeFetcher;
-        this.degreeUpdater = degreeUpdater;
-        this.degreeDeleter = degreeDeleter;
-    }
 
     // TODO: Admin only
     // Test cases validation, Already Exists, University Does Not Exist

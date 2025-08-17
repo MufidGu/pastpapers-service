@@ -5,22 +5,18 @@ import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class InstructorUpdater implements UpdateInstructor {
 
     private final Instructors instructors;
     private final Courses courses;
     private final Universities universities;
-
-    public InstructorUpdater(Instructors instructors, Courses courses, Universities universities) {
-        this.instructors = instructors;
-        this.courses = courses;
-        this.universities = universities;
-    }
 
     @Override
     public Instructor update(UUID id, String fullName, List<UUID> courseIds, List<UUID> universityIds) {

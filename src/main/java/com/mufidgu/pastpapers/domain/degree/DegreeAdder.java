@@ -4,20 +4,17 @@ import com.mufidgu.pastpapers.domain.degree.api.AddDegree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class DegreeAdder implements AddDegree {
 
     private final Degrees degrees;
     private final Universities universities;
-
-    public DegreeAdder(Degrees degrees, Universities universities) {
-        this.degrees = degrees;
-        this.universities = universities;
-    }
 
     public Degree add(String shortName, String fullName, List<UUID> universities) {
         // TODO: better exception handling

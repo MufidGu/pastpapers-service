@@ -3,17 +3,15 @@ package com.mufidgu.pastpapers.domain.university;
 import com.mufidgu.pastpapers.domain.university.api.UpdateUniversity;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class UniversityUpdater implements UpdateUniversity {
 
     private final Universities universities;
-
-    public UniversityUpdater(Universities universities) {
-        this.universities = universities;
-    }
 
     public University update(UUID id, String shortName, String fullName) {
         // TODO: better exception handling

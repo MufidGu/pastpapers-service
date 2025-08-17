@@ -4,20 +4,17 @@ import com.mufidgu.pastpapers.domain.degree.api.UpdateDegree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class DegreeUpdater implements UpdateDegree {
 
     private final Degrees degrees;
     private final Universities universities;
-
-    public DegreeUpdater(Degrees degrees, Universities universities) {
-        this.degrees = degrees;
-        this.universities = universities;
-    }
 
     public Degree update(UUID id, String shortName, String fullName, List<UUID> universities) {
         // TODO: better exception handling

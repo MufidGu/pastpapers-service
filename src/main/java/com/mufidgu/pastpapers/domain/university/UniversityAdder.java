@@ -3,15 +3,13 @@ package com.mufidgu.pastpapers.domain.university;
 import com.mufidgu.pastpapers.domain.university.api.AddUniversity;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 @DomainService
+@RequiredArgsConstructor
 public class UniversityAdder implements AddUniversity {
 
     private final Universities universities;
-
-    public UniversityAdder(Universities universities) {
-        this.universities = universities;
-    }
 
     public University add(String shortName, String fullName) {
         universities.findByShortNameAndFullName(shortName, fullName).ifPresent(u -> {

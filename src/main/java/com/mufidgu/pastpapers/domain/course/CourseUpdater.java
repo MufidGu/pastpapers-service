@@ -5,22 +5,18 @@ import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.university.spi.Universities;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class CourseUpdater implements UpdateCourse {
 
     private final Courses courses;
     private final Degrees degrees;
     private final Universities universities;
-
-    public CourseUpdater(Courses courses, Degrees degrees, Universities universities) {
-        this.courses = courses;
-        this.degrees = degrees;
-        this.universities = universities;
-    }
 
     public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
         // TODO: better error handling
