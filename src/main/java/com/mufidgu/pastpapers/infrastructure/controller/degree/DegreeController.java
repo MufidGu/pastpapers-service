@@ -27,20 +27,20 @@ public class DegreeController {
     private final DeleteDegree degreeDeleter;
 
     // TODO: Admin only
-    // Test cases validation, Already Exists, University Does Not Exist
+    // Test cases validation, Already Exists, Institution Does Not Exist
     @PostMapping("/add")
     public ResponseEntity<DegreeResource> addDegree(@Valid @RequestBody DegreeRequest request) {
-        Degree degree = degreeAdder.add(request.shortName, request.fullName, request.universityIds);
+        Degree degree = degreeAdder.add(request.shortName, request.fullName, request.institutionIds);
         return ResponseEntity.ok(new DegreeResource(
                 degree.id(),
                 degree.shortName(),
                 degree.fullName(),
-                degree.universities()
+                degree.institutions()
         ));
     }
 
     // TODO: Admin only
-    // Test cases validation, Degree/University Does Not Exist
+    // Test cases validation, Degree/Institution Does Not Exist
     @PostMapping("/update")
     public ResponseEntity<DegreeResource> updateDegree(
             @RequestParam @NotBlank String degreeId,
@@ -51,13 +51,13 @@ public class DegreeController {
                 id,
                 request.shortName,
                 request.fullName,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new DegreeResource(
                 degree.id(),
                 degree.shortName(),
                 degree.fullName(),
-                degree.universities()
+                degree.institutions()
         ));
     }
 
@@ -75,7 +75,7 @@ public class DegreeController {
     public ResponseEntity<Iterable<DegreeResource>> getAllDegrees() {
         var degrees = degreeFetcher.fetchAll();
         return ResponseEntity.ok(degrees.stream()
-                .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.universities()))
+                .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
                 .toList());
     }
 }

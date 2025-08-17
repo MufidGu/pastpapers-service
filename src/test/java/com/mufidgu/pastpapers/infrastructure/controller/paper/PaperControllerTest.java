@@ -12,8 +12,8 @@ import com.mufidgu.pastpapers.domain.paper.enums.Shift;
 import com.mufidgu.pastpapers.domain.paper.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
-import com.mufidgu.pastpapers.domain.university.University;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.Institution;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
 import ddd.Stub;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,14 +58,14 @@ public class PaperControllerTest {
     private Instructors instructors;
 
     @Autowired
-    private Universities universities;
+    private Institutions institutions;
 
     @Autowired
     private Degrees degrees;
 
     private Course testCourse;
     private Instructor testInstructor;
-    private University testUniversity;
+    private Institution testInstitution;
     private Degree testDegree;
     private Paper testPaper;
 
@@ -74,7 +74,7 @@ public class PaperControllerTest {
         // Create test entities to use in paper tests
         testCourse = courses.save(new Course("AI", "Artificial Intelligence", List.of(), List.of()));
         testInstructor = instructors.save(new Instructor("John Smith", List.of(), List.of()));
-        testUniversity = universities.save(new University("MIT", "Massachusetts Institute of Technology"));
+        testInstitution = institutions.save(new Institution("MIT", "Massachusetts Institute of Technology"));
         testDegree = degrees.save(new Degree("CS", "Computer Science", List.of()));
 
         UUID id = UUID.randomUUID();
@@ -83,7 +83,7 @@ public class PaperControllerTest {
                 testInstructor.id(),
                 testCourse.id(),
                 Type.FINAL,
-                testUniversity.id(),
+                testInstitution.id(),
                 testDegree.id(),
                 Shift.MORNING,
                 5,
@@ -142,7 +142,7 @@ public class PaperControllerTest {
                                     "instructorId": "%s",
                                     "courseId": "%s",
                                     "type": "MIDTERM",
-                                    "universityId": "%s",
+                                    "institutionId": "%s",
                                     "degreeId": "%s",
                                     "shift": "EVENING",
                                     "semester": 6,
@@ -151,14 +151,14 @@ public class PaperControllerTest {
                                     "season": "FALL",
                                     "date": "2024-10-15"
                                 }
-                                """, testInstructor.id(), testCourse.id(), testUniversity.id(), testDegree.id()))
+                                """, testInstructor.id(), testCourse.id(), testInstitution.id(), testDegree.id()))
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(testPaper.id().toString()))
                 .andExpect(jsonPath("$.instructorId").value(testInstructor.id().toString()))
                 .andExpect(jsonPath("$.courseId").value(testCourse.id().toString()))
                 .andExpect(jsonPath("$.type").value("MIDTERM"))
-                .andExpect(jsonPath("$.universityId").value(testUniversity.id().toString()))
+                .andExpect(jsonPath("$.institutionId").value(testInstitution.id().toString()))
                 .andExpect(jsonPath("$.degreeId").value(testDegree.id().toString()))
                 .andExpect(jsonPath("$.shift").value("EVENING"))
                 .andExpect(jsonPath("$.semester").value(6))
@@ -191,7 +191,7 @@ public class PaperControllerTest {
 
     @TestConfiguration
     @ComponentScan(
-            basePackageClasses = {Paper.class, Course.class, Instructor.class, University.class, Degree.class},
+            basePackageClasses = {Paper.class, Course.class, Instructor.class, Institution.class, Degree.class},
             includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Stub.class})})
     static class StubConfiguration {
     }

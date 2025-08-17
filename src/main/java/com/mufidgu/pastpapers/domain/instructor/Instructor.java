@@ -7,9 +7,9 @@ public record Instructor(
         UUID id,
         String fullName,
         List<UUID> courseIds,
-        List<UUID> universityIds
+        List<UUID> institutionIds
 ) {
-    public Instructor(String fullName, List<UUID> courseIds, List<UUID> universityIds) {
-        this(UUID.randomUUID(), fullName, courseIds, universityIds);
+    public Instructor(String fullName, List<UUID> courseIds, List<UUID> institutionIds) {
+        this(UUID.randomUUID(), fullName, courseIds, institutionIds);
     }
 }

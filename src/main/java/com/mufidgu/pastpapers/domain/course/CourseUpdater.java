@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.domain.course;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,9 +16,9 @@ public class CourseUpdater implements UpdateCourse {
 
     private final Courses courses;
     private final Degrees degrees;
-    private final Universities universities;
+    private final Institutions institutions;
 
-    public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
+    public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
         // TODO: better error handling
         Course existingCourse = courses.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Course does not exist"));
@@ -33,9 +33,9 @@ public class CourseUpdater implements UpdateCourse {
                 throw new IllegalArgumentException("Degree with ID " + degreeId + " does not exist");
             }
         });
-        universityIds.forEach(universityId -> {
-            if (universities.findById(universityId).isEmpty()) {
-                throw new IllegalArgumentException("University with ID " + universityId + " does not exist");
+        institutionIds.forEach(institutionId -> {
+            if (institutions.findById(institutionId).isEmpty()) {
+                throw new IllegalArgumentException("Institution with ID " + institutionId + " does not exist");
             }
         });
 
@@ -46,7 +46,7 @@ public class CourseUpdater implements UpdateCourse {
                         shortName,
                         fullName,
                         degreeIds,
-                        universityIds
+                        institutionIds
                 )
         );
     }

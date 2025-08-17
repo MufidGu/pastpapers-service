@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.domain.instructor;
 import com.mufidgu.pastpapers.domain.instructor.api.UpdateInstructor;
 import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,10 +16,10 @@ public class InstructorUpdater implements UpdateInstructor {
 
     private final Instructors instructors;
     private final Courses courses;
-    private final Universities universities;
+    private final Institutions institutions;
 
     @Override
-    public Instructor update(UUID id, String fullName, List<UUID> courseIds, List<UUID> universityIds) {
+    public Instructor update(UUID id, String fullName, List<UUID> courseIds, List<UUID> institutionIds) {
         Instructor existingInstructor = instructors.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Instructor does not exist"));
 
@@ -36,9 +36,9 @@ public class InstructorUpdater implements UpdateInstructor {
             }
         });
 
-        universityIds.forEach(universityId -> {
-            if (universities.findById(universityId).isEmpty()) {
-                throw new IllegalArgumentException("University with ID " + universityId + " does not exist");
+        institutionIds.forEach(institutionId -> {
+            if (institutions.findById(institutionId).isEmpty()) {
+                throw new IllegalArgumentException("Institution with ID " + institutionId + " does not exist");
             }
         });
 
@@ -47,7 +47,7 @@ public class InstructorUpdater implements UpdateInstructor {
                         existingInstructor.id(),
                         fullName,
                         courseIds,
-                        universityIds
+                        institutionIds
                 )
         );
     }

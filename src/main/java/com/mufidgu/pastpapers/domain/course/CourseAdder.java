@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.domain.course;
 import com.mufidgu.pastpapers.domain.course.api.AddCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,9 +16,9 @@ public class CourseAdder implements AddCourse {
 
     private final Courses courses;
     private final Degrees degrees;
-    private final Universities universities;
+    private final Institutions institutions;
 
-    public Course add(String shortName, String fullName, List<UUID> degreeIds, List<UUID> universityIds) {
+    public Course add(String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
         // TODO: better error handling
         courses.findByShortNameAndFullName(shortName, fullName)
                 .ifPresent(course -> {
@@ -26,10 +26,10 @@ public class CourseAdder implements AddCourse {
                 });
         degreeIds.forEach(id -> degrees.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Degree with ID " + id + " does not exist")));
-        universityIds.forEach(id -> universities.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("University with ID " + id + " does not exist")));
+        institutionIds.forEach(id -> institutions.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Institution with ID " + id + " does not exist")));
 
-        Course course = new Course(shortName, fullName, degreeIds, universityIds);
+        Course course = new Course(shortName, fullName, degreeIds, institutionIds);
         return courses.save(course);
     }
 }

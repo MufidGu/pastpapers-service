@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UpdateInstructor {
-    Instructor update(UUID id, String fullName, List<UUID> courseIds, List<UUID> universityIds);
+    Instructor update(UUID id, String fullName, List<UUID> courseIds, List<UUID> institutionIds);
 }

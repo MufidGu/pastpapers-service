@@ -12,7 +12,7 @@ public record PaperResource(
         UUID instructorId,
         UUID courseId,
         Type type,
-        UUID universityId,
+        UUID institutionId,
         UUID degreeId,
         Shift shift,
         Integer semester,

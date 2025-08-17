@@ -17,5 +17,5 @@ public class CourseRequest {
 
     public List<UUID> degreeIds;
 
-    public List<UUID> universityIds;
+    public List<UUID> institutionIds;
 }

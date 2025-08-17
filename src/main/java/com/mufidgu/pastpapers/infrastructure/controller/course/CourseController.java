@@ -27,21 +27,21 @@ public class CourseController {
     private final FetchCourse courseFetcher;
 
     // TODO: Admin Only
-    // Validation, Already Exists, Degree/University Does Not Exist
+    // Validation, Already Exists, Degree/Institution Does Not Exist
     @PostMapping("/add")
     public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseRequest request) {
         Course course = courseAdder.add(
                 request.shortName,
                 request.fullName,
                 request.degreeIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new CourseResource(
                 course.id(),
                 course.shortName(),
                 course.fullName(),
                 course.degreeIds(),
-                course.universityIds()
+                course.institutionIds()
         ));
     }
 
@@ -57,14 +57,14 @@ public class CourseController {
                 request.shortName,
                 request.fullName,
                 request.degreeIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new CourseResource(
                 course.id(),
                 course.shortName(),
                 course.fullName(),
                 course.degreeIds(),
-                course.universityIds()
+                course.institutionIds()
         ));
     }
 
@@ -86,7 +86,7 @@ public class CourseController {
                         c.shortName(),
                         c.fullName(),
                         c.degreeIds(),
-                        c.universityIds()))
+                        c.institutionIds()))
                 .toList());
     }
 

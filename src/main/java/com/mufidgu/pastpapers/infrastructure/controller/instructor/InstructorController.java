@@ -32,13 +32,13 @@ public class InstructorController {
         Instructor instructor = instructorAdder.add(
                 request.fullName,
                 request.courseIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new InstructorResource(
                 instructor.id(),
                 instructor.fullName(),
                 instructor.courseIds(),
-                instructor.universityIds()
+                instructor.institutionIds()
         ));
     }
 
@@ -53,13 +53,13 @@ public class InstructorController {
                 id,
                 request.fullName,
                 request.courseIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new InstructorResource(
                 instructor.id(),
                 instructor.fullName(),
                 instructor.courseIds(),
-                instructor.universityIds()
+                instructor.institutionIds()
         ));
     }
 
@@ -80,7 +80,7 @@ public class InstructorController {
                         i.id(),
                         i.fullName(),
                         i.courseIds(),
-                        i.universityIds()))
+                        i.institutionIds()))
                 .toList());
     }
 }
