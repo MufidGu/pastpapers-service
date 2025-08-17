@@ -14,7 +14,7 @@ public class InstructorLister implements ListInstructor {
     private final Instructors instructors;
 
     @Override
-    public List<Instructor> fetchAll() {
+    public List<Instructor> listAll() {
         return instructors.findAll();
     }
 }

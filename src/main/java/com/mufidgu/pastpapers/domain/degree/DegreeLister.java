@@ -13,7 +13,7 @@ public class DegreeLister implements ListDegree {
 
     private final Degrees degrees;
 
-    public List<Degree> fetchAll() {
+    public List<Degree> listAll() {
         return degrees.findAll();
     }
 }

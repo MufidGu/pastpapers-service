@@ -75,7 +75,7 @@ public class InstructorController {
     // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<InstructorResource>> list() {
-        List<Instructor> instructors = instructorLister.fetchAll();
+        List<Instructor> instructors = instructorLister.listAll();
         return ResponseEntity.ok(instructors.stream()
                 .map(i -> new InstructorResource(
                         i.id(),

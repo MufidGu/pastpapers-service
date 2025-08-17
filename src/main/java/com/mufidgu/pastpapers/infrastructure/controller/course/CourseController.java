@@ -79,7 +79,7 @@ public class CourseController {
     // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<CourseResource>> list() {
-        var courses = courseLister.fetchAll();
+        var courses = courseLister.listAll();
         return ResponseEntity.ok(courses.stream()
                 .map(c -> new CourseResource(
                         c.id(),

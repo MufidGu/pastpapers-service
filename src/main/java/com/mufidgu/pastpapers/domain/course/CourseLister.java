@@ -13,7 +13,7 @@ public class CourseLister implements ListCourse {
 
     private final Courses courses;
 
-    public List<Course> fetchAll() {
+    public List<Course> listAll() {
         return courses.findAll();
     }
 }

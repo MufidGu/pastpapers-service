@@ -5,5 +5,5 @@ import com.mufidgu.pastpapers.domain.course.Course;
 import java.util.List;
 
 public interface ListCourse {
-    List<Course> fetchAll();
+    List<Course> listAll();
 }

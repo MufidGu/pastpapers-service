@@ -13,7 +13,7 @@ public class InstitutionLister implements ListInstitution {
 
     private final Institutions institutions;
 
-    public List<Institution> fetchAll() {
+    public List<Institution> listAll() {
         return institutions.findAll();
     }
 }

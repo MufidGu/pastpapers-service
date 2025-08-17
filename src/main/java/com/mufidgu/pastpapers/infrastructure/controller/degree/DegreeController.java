@@ -73,7 +73,7 @@ public class DegreeController {
     // TODO: Registered users only
     @GetMapping("/list")
     public ResponseEntity<Iterable<DegreeResource>> list() {
-        var degrees = degreeLister.fetchAll();
+        var degrees = degreeLister.listAll();
         return ResponseEntity.ok(degrees.stream()
                 .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
                 .toList());

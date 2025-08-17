@@ -40,7 +40,7 @@ public class InstitutionController {
     // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<InstitutionResource>> list() {
-        var institutions = institutionLister.fetchAll();
+        var institutions = institutionLister.listAll();
         return ResponseEntity.ok(institutions.stream()
                 .map(it -> new InstitutionResource(it.id(), it.shortName(), it.fullName()))
                 .toList());
