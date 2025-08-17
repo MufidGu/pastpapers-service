@@ -7,6 +7,6 @@ public record InstructorResource(
         UUID id,
         String fullName,
         List<UUID> courseIds,
-        List<UUID> universityIds
+        List<UUID> institutionIds
 ) {
 }

@@ -11,7 +11,7 @@ public class PaperRequest {
     public UUID instructorId;
     public UUID courseId;
     public Type type;
-    public UUID universityId;
+    public UUID institutionId;
     public UUID degreeId;
     public Shift shift;
     public Integer semester;

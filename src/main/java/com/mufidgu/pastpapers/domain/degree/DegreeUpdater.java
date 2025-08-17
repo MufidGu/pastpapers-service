@@ -2,7 +2,7 @@ package com.mufidgu.pastpapers.domain.degree;
 
 import com.mufidgu.pastpapers.domain.degree.api.UpdateDegree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -14,9 +14,9 @@ import java.util.UUID;
 public class DegreeUpdater implements UpdateDegree {
 
     private final Degrees degrees;
-    private final Universities universities;
+    private final Institutions institutions;
 
-    public Degree update(UUID id, String shortName, String fullName, List<UUID> universities) {
+    public Degree update(UUID id, String shortName, String fullName, List<UUID> institutions) {
         // TODO: better exception handling
         Degree degree = degrees.findById(id).orElseThrow(() -> new IllegalArgumentException("Degree does not exist"));
         degrees.findByShortNameAndFullName(shortName, fullName).ifPresent(d -> {
@@ -24,15 +24,15 @@ public class DegreeUpdater implements UpdateDegree {
                 throw new IllegalArgumentException("Degree with the same short name and full name already exists");
             }
         });
-        universities.forEach(universityId -> {
-            if (this.universities.findById(universityId) == null) {
-                throw new IllegalArgumentException("University not found with id: " + universityId);
+        institutions.forEach(institutionId -> {
+            if (this.institutions.findById(institutionId) == null) {
+                throw new IllegalArgumentException("Institution not found with id: " + institutionId);
             }
         });
 
         // TODO: Revisit this when adding database to project
         return degrees.save(
-                new Degree(degree.id(), shortName, fullName, universities)
+                new Degree(degree.id(), shortName, fullName, institutions)
         );
     }
 }

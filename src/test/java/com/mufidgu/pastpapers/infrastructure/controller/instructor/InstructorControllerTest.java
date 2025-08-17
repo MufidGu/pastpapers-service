@@ -4,8 +4,8 @@ import com.mufidgu.pastpapers.domain.instructor.Instructor;
 import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
-import com.mufidgu.pastpapers.domain.university.University;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.Institution;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
 import ddd.Stub;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,16 +38,16 @@ public class InstructorControllerTest {
     private Courses courses;
 
     @Autowired
-    private Universities universities;
+    private Institutions institutions;
 
     private Course testCourse;
-    private University testUniversity;
+    private Institution testInstitution;
 
     @BeforeEach
     void setUp() {
-        // Create test course and university to use in instructor tests
+        // Create test course and institution to use in instructor tests
         testCourse = courses.save(new Course("AI", "Artificial Intelligence", List.of(), List.of()));
-        testUniversity = universities.save(new University("MIT", "Massachusetts Institute of Technology"));
+        testInstitution = institutions.save(new Institution("MIT", "Massachusetts Institute of Technology"));
     }
 
     @Test
@@ -59,24 +59,24 @@ public class InstructorControllerTest {
                                 {
                                     "fullName": "John Doe",
                                     "courseIds": ["%s"],
-                                    "universityIds": ["%s"]
+                                    "institutionIds": ["%s"]
                                 }
-                                """, testCourse.id(), testUniversity.id()))
+                                """, testCourse.id(), testInstitution.id()))
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.fullName").value("John Doe"))
                 .andExpect(jsonPath("$.courseIds[0]").value(testCourse.id().toString()))
-                .andExpect(jsonPath("$.universityIds[0]").value(testUniversity.id().toString()));
+                .andExpect(jsonPath("$.institutionIds[0]").value(testInstitution.id().toString()));
     }
 
     @Test
     void should_return_all_instructors() throws Exception {
         // Create a test instructor
-        instructors.save(new Instructor("Jane Smith", List.of(testCourse.id()), List.of(testUniversity.id())));
+        instructors.save(new Instructor("Jane Smith", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                get("/instructor/all")
+                get("/instructor/list")
                         .contentType("application/json")
         )
                 .andExpect(status().isOk())
@@ -88,7 +88,7 @@ public class InstructorControllerTest {
     @Test
     void should_update_instructor() throws Exception {
         // Create a test instructor
-        Instructor instructor = instructors.save(new Instructor("Robert Brown", List.of(testCourse.id()), List.of(testUniversity.id())));
+        Instructor instructor = instructors.save(new Instructor("Robert Brown", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
                 put("/instructor/update?instructorId=" + instructor.id())
@@ -97,21 +97,21 @@ public class InstructorControllerTest {
                                 {
                                     "fullName": "Robert Green",
                                     "courseIds": ["%s"],
-                                    "universityIds": ["%s"]
+                                    "institutionIds": ["%s"]
                                 }
-                                """, testCourse.id(), testUniversity.id()))
+                                """, testCourse.id(), testInstitution.id()))
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(instructor.id().toString()))
                 .andExpect(jsonPath("$.fullName").value("Robert Green"))
                 .andExpect(jsonPath("$.courseIds[0]").value(testCourse.id().toString()))
-                .andExpect(jsonPath("$.universityIds[0]").value(testUniversity.id().toString()));
+                .andExpect(jsonPath("$.institutionIds[0]").value(testInstitution.id().toString()));
     }
 
     @Test
     void should_delete_instructor() throws Exception {
         // Create a test instructor
-        Instructor instructor = instructors.save(new Instructor("David Wilson", List.of(testCourse.id()), List.of(testUniversity.id())));
+        Instructor instructor = instructors.save(new Instructor("David Wilson", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
                 delete("/instructor/delete?instructorId=" + instructor.id())
@@ -119,14 +119,14 @@ public class InstructorControllerTest {
                 .andExpect(status().isOk());
 
         // Verify that the instructor is deleted
-        mockMvc.perform(get("/instructor/all"))
+        mockMvc.perform(get("/instructor/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.fullName == 'David Wilson')]").doesNotExist());
     }
 
     @TestConfiguration
     @ComponentScan(
-            basePackageClasses = {Instructor.class, Course.class, University.class},
+            basePackageClasses = {Instructor.class, Course.class, Institution.class},
             includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Stub.class})})
     static class StubConfiguration {
     }

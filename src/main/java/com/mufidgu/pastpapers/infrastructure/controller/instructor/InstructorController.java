@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.instructor;
 import com.mufidgu.pastpapers.domain.instructor.Instructor;
 import com.mufidgu.pastpapers.domain.instructor.api.AddInstructor;
 import com.mufidgu.pastpapers.domain.instructor.api.DeleteInstructor;
-import com.mufidgu.pastpapers.domain.instructor.api.FetchInstructor;
+import com.mufidgu.pastpapers.domain.instructor.api.ListInstructor;
 import com.mufidgu.pastpapers.domain.instructor.api.UpdateInstructor;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -24,27 +25,27 @@ public class InstructorController {
     private final AddInstructor instructorAdder;
     private final UpdateInstructor instructorUpdater;
     private final DeleteInstructor instructorDeleter;
-    private final FetchInstructor instructorFetcher;
+    private final ListInstructor instructorLister;
 
     // TODO: Admin Only
     @PostMapping("/add")
-    public ResponseEntity<InstructorResource> addInstructor(@Valid @RequestBody InstructorRequest request) {
+    public ResponseEntity<InstructorResource> add(@Valid @RequestBody InstructorRequest request) {
         Instructor instructor = instructorAdder.add(
                 request.fullName,
                 request.courseIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new InstructorResource(
                 instructor.id(),
                 instructor.fullName(),
                 instructor.courseIds(),
-                instructor.universityIds()
+                instructor.institutionIds()
         ));
     }
 
     // TODO: Admin Only
     @PutMapping("/update")
-    public ResponseEntity<InstructorResource> updateInstructor(
+    public ResponseEntity<InstructorResource> update(
             @NotBlank @RequestParam String instructorId,
             @Valid @RequestBody InstructorRequest request
     ) {
@@ -53,34 +54,34 @@ public class InstructorController {
                 id,
                 request.fullName,
                 request.courseIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new InstructorResource(
                 instructor.id(),
                 instructor.fullName(),
                 instructor.courseIds(),
-                instructor.universityIds()
+                instructor.institutionIds()
         ));
     }
 
     // TODO: Admin Only
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteInstructor(@NotBlank @RequestParam String instructorId) {
+    public ResponseEntity<Void> delete(@NotBlank @RequestParam String instructorId) {
         UUID id = UUID.fromString(instructorId);
         instructorDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // TODO: Registered Users Only
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<InstructorResource>> getAllInstructors() {
-        var instructors = instructorFetcher.fetchAll();
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<InstructorResource>> list() {
+        List<Instructor> instructors = instructorLister.listAll();
         return ResponseEntity.ok(instructors.stream()
                 .map(i -> new InstructorResource(
                         i.id(),
                         i.fullName(),
                         i.courseIds(),
-                        i.universityIds()))
+                        i.institutionIds()))
                 .toList());
     }
 }

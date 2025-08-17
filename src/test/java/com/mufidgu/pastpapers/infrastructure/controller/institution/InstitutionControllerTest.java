@@ -1,7 +1,7 @@
-package com.mufidgu.pastpapers.infrastructure.controller.university;
+package com.mufidgu.pastpapers.infrastructure.controller.institution;
 
-import com.mufidgu.pastpapers.domain.university.University;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.Institution;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
 import ddd.Stub;
 import org.junit.jupiter.api.Test;
@@ -19,18 +19,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @Import(DomainConfiguration.class)
-public class UniversityControllerTest {
+public class InstitutionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private Universities universities;
+    private Institutions institutions;
 
     @Test
-    void should_add_university() throws Exception {
+    void should_add_institution() throws Exception {
         mockMvc.perform(
-                        post("/university/add")
+                        post("/institution/add")
                                 .contentType("application/json")
                                 .content("""
                                         {
@@ -46,11 +46,11 @@ public class UniversityControllerTest {
     }
 
     @Test
-    void should_return_university() throws Exception {
-        universities.save(new University("Stanford", "Stanford University"));
+    void should_return_institution() throws Exception {
+        institutions.save(new Institution("Stanford", "Stanford Institution"));
 
         mockMvc.perform(
-                        get("/university/all")
+                        get("/institution/list")
                                 .contentType("application/json")
                 )
                 .andExpect(status().isOk())
@@ -60,44 +60,44 @@ public class UniversityControllerTest {
     }
 
     @Test
-    void should_update_university() throws Exception {
-        University university = universities.save(new University("Harvard", "Harvard University"));
+    void should_update_institution() throws Exception {
+        Institution institution = institutions.save(new Institution("Harvard", "Harvard Institution"));
 
         mockMvc.perform(
-                        put("/university/update?universityId=" + university.id())
+                        put("/institution/update?institutionId=" + institution.id())
                                 .contentType("application/json")
                                 .content("""
                                         {
                                             "shortName": "Harvard Updated",
-                                            "fullName": "Harvard University Updated"
+                                            "fullName": "Harvard Institution Updated"
                                         }
                                         """)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(university.id().toString()))
+                .andExpect(jsonPath("$.id").value(institution.id().toString()))
                 .andExpect(jsonPath("$.shortName").value("Harvard Updated"))
-                .andExpect(jsonPath("$.fullName").value("Harvard University Updated"));
+                .andExpect(jsonPath("$.fullName").value("Harvard Institution Updated"));
     }
 
 
     @Test
-    void should_delete_university() throws Exception {
-        University university = universities.save(new University("Yale", "Yale University"));
+    void should_delete_institution() throws Exception {
+        Institution institution = institutions.save(new Institution("Yale", "Yale Institution"));
 
         mockMvc.perform(
-                        delete("/university/delete?universityId=" + university.id())
+                        delete("/institution/delete?institutionId=" + institution.id())
                 )
                 .andExpect(status().isOk());
 
-        // Verify that the university is deleted
-        mockMvc.perform(get("/university/all"))
+        // Verify that the institution is deleted
+        mockMvc.perform(get("/institution/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.shortName == 'Yale')]").doesNotExist());
     }
 
     @TestConfiguration
     @ComponentScan(
-            basePackageClasses = {University.class},
+            basePackageClasses = {Institution.class},
             includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Stub.class})})
     static class StubConfiguration {
     }

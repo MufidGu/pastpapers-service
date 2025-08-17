@@ -8,6 +8,6 @@ public record CourseResource(
         String shortName,
         String fullName,
         List<UUID> degreeIds,
-        List<UUID> universityIds
+        List<UUID> institutionIds
 ) {
 }

@@ -2,7 +2,7 @@ package com.mufidgu.pastpapers.domain.degree;
 
 import com.mufidgu.pastpapers.domain.degree.api.AddDegree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -14,20 +14,20 @@ import java.util.UUID;
 public class DegreeAdder implements AddDegree {
 
     private final Degrees degrees;
-    private final Universities universities;
+    private final Institutions institutions;
 
-    public Degree add(String shortName, String fullName, List<UUID> universities) {
+    public Degree add(String shortName, String fullName, List<UUID> institutions) {
         // TODO: better exception handling
         degrees.findByShortNameAndFullName(shortName, fullName).ifPresent(d -> {
             throw new IllegalArgumentException("Degree with the same short name and full name already exists");
         });
-        universities.forEach(universityId -> {
-            if (this.universities.findById(universityId) == null) {
-                throw new IllegalArgumentException("University not found with id: " + universityId);
+        institutions.forEach(institutionId -> {
+            if (this.institutions.findById(institutionId) == null) {
+                throw new IllegalArgumentException("Institution not found with id: " + institutionId);
             }
         });
 
-        Degree degree = new Degree(shortName, fullName, universities);
+        Degree degree = new Degree(shortName, fullName, institutions);
         return degrees.save(degree);
     }
 }

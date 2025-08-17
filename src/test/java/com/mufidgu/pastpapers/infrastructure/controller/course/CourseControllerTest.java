@@ -4,8 +4,8 @@ import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.university.University;
-import com.mufidgu.pastpapers.domain.university.spi.Universities;
+import com.mufidgu.pastpapers.domain.institution.Institution;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
 import ddd.Stub;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,16 +38,16 @@ public class CourseControllerTest {
     private Degrees degrees;
 
     @Autowired
-    private Universities universities;
+    private Institutions institutions;
 
     private Degree testDegree;
-    private University testUniversity;
+    private Institution testInstitution;
 
     @BeforeEach
     void setUp() {
-        // Create test degree and university to use in course tests
+        // Create test degree and institution to use in course tests
         testDegree = degrees.save(new Degree("CS", "Computer Science", List.of()));
-        testUniversity = universities.save(new University("MIT", "Massachusetts Institute of Technology"));
+        testInstitution = institutions.save(new Institution("MIT", "Massachusetts Institute of Technology"));
     }
 
     @Test
@@ -60,25 +60,25 @@ public class CourseControllerTest {
                                             "shortName": "AI",
                                             "fullName": "Artificial Intelligence",
                                             "degreeIds": ["%s"],
-                                            "universityIds": ["%s"]
+                                            "institutionIds": ["%s"]
                                         }
-                                        """, testDegree.id(), testUniversity.id()))
+                                        """, testDegree.id(), testInstitution.id()))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.shortName").value("AI"))
                 .andExpect(jsonPath("$.fullName").value("Artificial Intelligence"))
                 .andExpect(jsonPath("$.degreeIds[0]").value(testDegree.id().toString()))
-                .andExpect(jsonPath("$.universityIds[0]").value(testUniversity.id().toString()));
+                .andExpect(jsonPath("$.institutionIds[0]").value(testInstitution.id().toString()));
     }
 
     @Test
     void should_return_all_courses() throws Exception {
         // Create a test course
-        courses.save(new Course("ML", "Machine Learning", List.of(testDegree.id()), List.of(testUniversity.id())));
+        courses.save(new Course("ML", "Machine Learning", List.of(testDegree.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                        get("/course/all")
+                        get("/course/list")
                                 .contentType("application/json")
                 )
                 .andExpect(status().isOk())
@@ -90,7 +90,7 @@ public class CourseControllerTest {
     @Test
     void should_update_course() throws Exception {
         // Create a test course
-        Course course = courses.save(new Course("DS", "Data Science", List.of(testDegree.id()), List.of(testUniversity.id())));
+        Course course = courses.save(new Course("DS", "Data Science", List.of(testDegree.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
                         put("/course/update?courseId=" + course.id())
@@ -100,22 +100,22 @@ public class CourseControllerTest {
                                             "shortName": "DataSci",
                                             "fullName": "Data Science and Analytics",
                                             "degreeIds": ["%s"],
-                                            "universityIds": ["%s"]
+                                            "institutionIds": ["%s"]
                                         }
-                                        """, testDegree.id(), testUniversity.id()))
+                                        """, testDegree.id(), testInstitution.id()))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(course.id().toString()))
                 .andExpect(jsonPath("$.shortName").value("DataSci"))
                 .andExpect(jsonPath("$.fullName").value("Data Science and Analytics"))
                 .andExpect(jsonPath("$.degreeIds[0]").value(testDegree.id().toString()))
-                .andExpect(jsonPath("$.universityIds[0]").value(testUniversity.id().toString()));
+                .andExpect(jsonPath("$.institutionIds[0]").value(testInstitution.id().toString()));
     }
 
     @Test
     void should_delete_course() throws Exception {
         // Create a test course
-        Course course = courses.save(new Course("CyberSec", "Cyber Security", List.of(testDegree.id()), List.of(testUniversity.id())));
+        Course course = courses.save(new Course("CyberSec", "Cyber Security", List.of(testDegree.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
                         delete("/course/delete?courseId=" + course.id())
@@ -123,14 +123,14 @@ public class CourseControllerTest {
                 .andExpect(status().isOk());
 
         // Verify that the course is deleted
-        mockMvc.perform(get("/course/all"))
+        mockMvc.perform(get("/course/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.shortName == 'CyberSec')]").doesNotExist());
     }
 
     @TestConfiguration
     @ComponentScan(
-            basePackageClasses = {Course.class, Degree.class, University.class},
+            basePackageClasses = {Course.class, Degree.class, Institution.class},
             includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Stub.class})})
     static class StubConfiguration {
     }

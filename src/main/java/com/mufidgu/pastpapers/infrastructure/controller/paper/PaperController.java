@@ -32,7 +32,7 @@ public class PaperController {
     private final ListPaper paperLister;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> addPaper(
+    public ResponseEntity<String> add(
             @Valid
             @FileTypeRestriction(
                     acceptedTypes = {
@@ -57,7 +57,7 @@ public class PaperController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<File> downloadPaper(
+    public ResponseEntity<File> download(
             @NotBlank @RequestParam String paperId
     ) {
         UUID id = UUID.fromString(paperId);
@@ -67,7 +67,7 @@ public class PaperController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<PaperResource> updatePaper(
+    public ResponseEntity<PaperResource> update(
             @NotBlank @RequestParam String paperId,
             @Valid @RequestBody PaperRequest request
     ) {
@@ -77,7 +77,7 @@ public class PaperController {
                 request.instructorId,
                 request.courseId,
                 request.type,
-                request.universityId,
+                request.institutionId,
                 request.degreeId,
                 request.shift,
                 request.semester,
@@ -92,7 +92,7 @@ public class PaperController {
                         paper.instructorId(),
                         paper.courseId(),
                         paper.type(),
-                        paper.universityId(),
+                        paper.institutionId(),
                         paper.degreeId(),
                         paper.shift(),
                         paper.semester(),
@@ -105,7 +105,7 @@ public class PaperController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deletePaper(
+    public ResponseEntity<String> delete(
             @NotBlank @RequestParam String paperId
     ) {
         UUID id = UUID.fromString(paperId);
@@ -115,7 +115,7 @@ public class PaperController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<List<PaperResource>> listPapers() {
+    public ResponseEntity<List<PaperResource>> list() {
         List<Paper> papers = paperLister.listAll();
         List<PaperResource> paperResources = papers.stream()
                 .map(paper -> new PaperResource(
@@ -123,7 +123,7 @@ public class PaperController {
                         paper.instructorId(),
                         paper.courseId(),
                         paper.type(),
-                        paper.universityId(),
+                        paper.institutionId(),
                         paper.degreeId(),
                         paper.shift(),
                         paper.semester(),

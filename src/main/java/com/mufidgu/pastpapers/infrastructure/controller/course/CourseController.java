@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.course;
 import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.api.AddCourse;
 import com.mufidgu.pastpapers.domain.course.api.DeleteCourse;
-import com.mufidgu.pastpapers.domain.course.api.FetchCourse;
+import com.mufidgu.pastpapers.domain.course.api.ListCourse;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -24,30 +25,30 @@ public class CourseController {
     private final AddCourse courseAdder;
     private final UpdateCourse courseUpdater;
     private final DeleteCourse courseDeleter;
-    private final FetchCourse courseFetcher;
+    private final ListCourse courseLister;
 
     // TODO: Admin Only
-    // Validation, Already Exists, Degree/University Does Not Exist
+    // Validation, Already Exists, Degree/Institution Does Not Exist
     @PostMapping("/add")
-    public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseRequest request) {
+    public ResponseEntity<CourseResource> add(@Valid @RequestBody CourseRequest request) {
         Course course = courseAdder.add(
                 request.shortName,
                 request.fullName,
                 request.degreeIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new CourseResource(
                 course.id(),
                 course.shortName(),
                 course.fullName(),
                 course.degreeIds(),
-                course.universityIds()
+                course.institutionIds()
         ));
     }
 
     // TODO: Admin Only
     @PutMapping("/update")
-    public ResponseEntity<CourseResource> updateCourse(
+    public ResponseEntity<CourseResource> update(
             @NotBlank @RequestParam String courseId,
             @Valid @RequestBody CourseRequest request
     ) {
@@ -57,36 +58,36 @@ public class CourseController {
                 request.shortName,
                 request.fullName,
                 request.degreeIds,
-                request.universityIds
+                request.institutionIds
         );
         return ResponseEntity.ok(new CourseResource(
                 course.id(),
                 course.shortName(),
                 course.fullName(),
                 course.degreeIds(),
-                course.universityIds()
+                course.institutionIds()
         ));
     }
 
     // TODO: Admin Only
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteCourse(@NotBlank @RequestParam String courseId) {
+    public ResponseEntity<Void> delete(@NotBlank @RequestParam String courseId) {
         UUID id = UUID.fromString(courseId);
         courseDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // TODO: Registered Users Only
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<CourseResource>> getAllCourses() {
-        var courses = courseFetcher.fetchAll();
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<CourseResource>> list() {
+        List<Course> courses = courseLister.listAll();
         return ResponseEntity.ok(courses.stream()
                 .map(c -> new CourseResource(
                         c.id(),
                         c.shortName(),
                         c.fullName(),
                         c.degreeIds(),
-                        c.universityIds()))
+                        c.institutionIds()))
                 .toList());
     }
 
