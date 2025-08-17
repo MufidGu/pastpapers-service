@@ -28,7 +28,7 @@ public class InstructorController {
 
     // TODO: Admin Only
     @PostMapping("/add")
-    public ResponseEntity<InstructorResource> addInstructor(@Valid @RequestBody InstructorRequest request) {
+    public ResponseEntity<InstructorResource> add(@Valid @RequestBody InstructorRequest request) {
         Instructor instructor = instructorAdder.add(
                 request.fullName,
                 request.courseIds,
@@ -44,7 +44,7 @@ public class InstructorController {
 
     // TODO: Admin Only
     @PutMapping("/update")
-    public ResponseEntity<InstructorResource> updateInstructor(
+    public ResponseEntity<InstructorResource> update(
             @NotBlank @RequestParam String instructorId,
             @Valid @RequestBody InstructorRequest request
     ) {
@@ -65,7 +65,7 @@ public class InstructorController {
 
     // TODO: Admin Only
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteInstructor(@NotBlank @RequestParam String instructorId) {
+    public ResponseEntity<Void> delete(@NotBlank @RequestParam String instructorId) {
         UUID id = UUID.fromString(instructorId);
         instructorDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -73,7 +73,7 @@ public class InstructorController {
 
     // TODO: Registered Users Only
     @GetMapping("/all")
-    public ResponseEntity<Iterable<InstructorResource>> getAllInstructors() {
+    public ResponseEntity<Iterable<InstructorResource>> getAll() {
         var instructors = instructorFetcher.fetchAll();
         return ResponseEntity.ok(instructors.stream()
                 .map(i -> new InstructorResource(

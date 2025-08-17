@@ -29,7 +29,7 @@ public class CourseController {
     // TODO: Admin Only
     // Validation, Already Exists, Degree/Institution Does Not Exist
     @PostMapping("/add")
-    public ResponseEntity<CourseResource> addCourse(@Valid @RequestBody CourseRequest request) {
+    public ResponseEntity<CourseResource> add(@Valid @RequestBody CourseRequest request) {
         Course course = courseAdder.add(
                 request.shortName,
                 request.fullName,
@@ -47,7 +47,7 @@ public class CourseController {
 
     // TODO: Admin Only
     @PutMapping("/update")
-    public ResponseEntity<CourseResource> updateCourse(
+    public ResponseEntity<CourseResource> update(
             @NotBlank @RequestParam String courseId,
             @Valid @RequestBody CourseRequest request
     ) {
@@ -70,7 +70,7 @@ public class CourseController {
 
     // TODO: Admin Only
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteCourse(@NotBlank @RequestParam String courseId) {
+    public ResponseEntity<Void> delete(@NotBlank @RequestParam String courseId) {
         UUID id = UUID.fromString(courseId);
         courseDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -78,7 +78,7 @@ public class CourseController {
 
     // TODO: Registered Users Only
     @GetMapping("/all")
-    public ResponseEntity<Iterable<CourseResource>> getAllCourses() {
+    public ResponseEntity<Iterable<CourseResource>> getAll() {
         var courses = courseFetcher.fetchAll();
         return ResponseEntity.ok(courses.stream()
                 .map(c -> new CourseResource(

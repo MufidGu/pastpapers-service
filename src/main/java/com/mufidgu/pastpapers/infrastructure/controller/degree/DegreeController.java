@@ -29,7 +29,7 @@ public class DegreeController {
     // TODO: Admin only
     // Test cases validation, Already Exists, Institution Does Not Exist
     @PostMapping("/add")
-    public ResponseEntity<DegreeResource> addDegree(@Valid @RequestBody DegreeRequest request) {
+    public ResponseEntity<DegreeResource> add(@Valid @RequestBody DegreeRequest request) {
         Degree degree = degreeAdder.add(request.shortName, request.fullName, request.institutionIds);
         return ResponseEntity.ok(new DegreeResource(
                 degree.id(),
@@ -42,7 +42,7 @@ public class DegreeController {
     // TODO: Admin only
     // Test cases validation, Degree/Institution Does Not Exist
     @PostMapping("/update")
-    public ResponseEntity<DegreeResource> updateDegree(
+    public ResponseEntity<DegreeResource> update(
             @RequestParam @NotBlank String degreeId,
             @Valid @RequestBody DegreeRequest request
     ) {
@@ -64,7 +64,7 @@ public class DegreeController {
     // TODO: Admin only
     // Test cases validation, Degree Does Not Exist
     @PostMapping("/delete")
-    public ResponseEntity<Void> deleteDegree(@RequestParam @NotBlank String degreeId) {
+    public ResponseEntity<Void> delete(@RequestParam @NotBlank String degreeId) {
         UUID id = UUID.fromString(degreeId);
         degreeDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -72,7 +72,7 @@ public class DegreeController {
 
     // TODO: Registered users only
     @GetMapping("/all")
-    public ResponseEntity<Iterable<DegreeResource>> getAllDegrees() {
+    public ResponseEntity<Iterable<DegreeResource>> getAll() {
         var degrees = degreeFetcher.fetchAll();
         return ResponseEntity.ok(degrees.stream()
                 .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
