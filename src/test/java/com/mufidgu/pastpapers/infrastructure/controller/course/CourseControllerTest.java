@@ -78,7 +78,7 @@ public class CourseControllerTest {
         courses.save(new Course("ML", "Machine Learning", List.of(testDegree.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                        get("/course/all")
+                        get("/course/list")
                                 .contentType("application/json")
                 )
                 .andExpect(status().isOk())
@@ -123,7 +123,7 @@ public class CourseControllerTest {
                 .andExpect(status().isOk());
 
         // Verify that the course is deleted
-        mockMvc.perform(get("/course/all"))
+        mockMvc.perform(get("/course/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.shortName == 'CyberSec')]").doesNotExist());
     }

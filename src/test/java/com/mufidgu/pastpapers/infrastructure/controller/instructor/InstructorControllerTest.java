@@ -76,7 +76,7 @@ public class InstructorControllerTest {
         instructors.save(new Instructor("Jane Smith", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                get("/instructor/all")
+                get("/instructor/list")
                         .contentType("application/json")
         )
                 .andExpect(status().isOk())
@@ -119,7 +119,7 @@ public class InstructorControllerTest {
                 .andExpect(status().isOk());
 
         // Verify that the instructor is deleted
-        mockMvc.perform(get("/instructor/all"))
+        mockMvc.perform(get("/instructor/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.fullName == 'David Wilson')]").doesNotExist());
     }

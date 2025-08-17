@@ -72,7 +72,7 @@ public class DegreeControllerTest {
         degrees.save(new Degree("Math", "Mathematics", List.of(testInstitution.id())));
 
         mockMvc.perform(
-                        get("/degree/all")
+                        get("/degree/list")
                                 .contentType("application/json")
                 )
                 .andExpect(status().isOk())
@@ -115,7 +115,7 @@ public class DegreeControllerTest {
                 .andExpect(status().isOk());
 
         // Verify that the degree is deleted
-        mockMvc.perform(get("/degree/all"))
+        mockMvc.perform(get("/degree/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.shortName == 'Bio')]").doesNotExist());
     }

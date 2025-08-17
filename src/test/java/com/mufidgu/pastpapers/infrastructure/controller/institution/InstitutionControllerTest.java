@@ -50,7 +50,7 @@ public class InstitutionControllerTest {
         institutions.save(new Institution("Stanford", "Stanford Institution"));
 
         mockMvc.perform(
-                        get("/institution/all")
+                        get("/institution/list")
                                 .contentType("application/json")
                 )
                 .andExpect(status().isOk())
@@ -90,7 +90,7 @@ public class InstitutionControllerTest {
                 .andExpect(status().isOk());
 
         // Verify that the institution is deleted
-        mockMvc.perform(get("/institution/all"))
+        mockMvc.perform(get("/institution/list"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.shortName == 'Yale')]").doesNotExist());
     }
