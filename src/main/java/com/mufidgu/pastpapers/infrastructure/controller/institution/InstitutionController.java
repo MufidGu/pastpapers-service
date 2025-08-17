@@ -2,7 +2,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.institution;
 
 import com.mufidgu.pastpapers.domain.institution.api.AddInstitution;
 import com.mufidgu.pastpapers.domain.institution.api.DeleteInstitution;
-import com.mufidgu.pastpapers.domain.institution.api.FetchInstitution;
+import com.mufidgu.pastpapers.domain.institution.api.ListInstitution;
 import com.mufidgu.pastpapers.domain.institution.api.UpdateInstitution;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class InstitutionController {
 
     private final AddInstitution institutionAdder;
-    private final FetchInstitution institutionFetcher;
+    private final ListInstitution institutionLister;
     private final UpdateInstitution institutionUpdater;
     private final DeleteInstitution institutionDeleter;
 
@@ -38,9 +38,9 @@ public class InstitutionController {
     }
 
     // TODO: Registered Users Only
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<InstitutionResource>> getAll() {
-        var institutions = institutionFetcher.fetchAll();
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<InstitutionResource>> list() {
+        var institutions = institutionLister.fetchAll();
         return ResponseEntity.ok(institutions.stream()
                 .map(it -> new InstitutionResource(it.id(), it.shortName(), it.fullName()))
                 .toList());

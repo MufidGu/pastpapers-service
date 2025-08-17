@@ -4,6 +4,6 @@ import com.mufidgu.pastpapers.domain.instructor.Instructor;
 
 import java.util.List;
 
-public interface FetchInstructor {
+public interface ListInstructor {
     List<Instructor> fetchAll();
 }

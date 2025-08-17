@@ -4,6 +4,6 @@ import com.mufidgu.pastpapers.domain.institution.Institution;
 
 import java.util.List;
 
-public interface FetchInstitution {
+public interface ListInstitution {
     List<Institution> fetchAll();
 }

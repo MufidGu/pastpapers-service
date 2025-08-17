@@ -4,6 +4,6 @@ import com.mufidgu.pastpapers.domain.degree.Degree;
 
 import java.util.List;
 
-public interface FetchDegree {
+public interface ListDegree {
     List<Degree> fetchAll();
 }

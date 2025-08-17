@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.course;
 import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.api.AddCourse;
 import com.mufidgu.pastpapers.domain.course.api.DeleteCourse;
-import com.mufidgu.pastpapers.domain.course.api.FetchCourse;
+import com.mufidgu.pastpapers.domain.course.api.ListCourse;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -24,7 +24,7 @@ public class CourseController {
     private final AddCourse courseAdder;
     private final UpdateCourse courseUpdater;
     private final DeleteCourse courseDeleter;
-    private final FetchCourse courseFetcher;
+    private final ListCourse courseLister;
 
     // TODO: Admin Only
     // Validation, Already Exists, Degree/Institution Does Not Exist
@@ -77,9 +77,9 @@ public class CourseController {
     }
 
     // TODO: Registered Users Only
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<CourseResource>> getAll() {
-        var courses = courseFetcher.fetchAll();
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<CourseResource>> list() {
+        var courses = courseLister.fetchAll();
         return ResponseEntity.ok(courses.stream()
                 .map(c -> new CourseResource(
                         c.id(),

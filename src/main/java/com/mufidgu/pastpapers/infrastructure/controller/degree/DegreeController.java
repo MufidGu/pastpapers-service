@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.degree;
 import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.api.AddDegree;
 import com.mufidgu.pastpapers.domain.degree.api.DeleteDegree;
-import com.mufidgu.pastpapers.domain.degree.api.FetchDegree;
+import com.mufidgu.pastpapers.domain.degree.api.ListDegree;
 import com.mufidgu.pastpapers.domain.degree.api.UpdateDegree;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class DegreeController {
 
     private final AddDegree degreeAdder;
-    private final FetchDegree degreeFetcher;
+    private final ListDegree degreeLister;
     private final UpdateDegree degreeUpdater;
     private final DeleteDegree degreeDeleter;
 
@@ -71,9 +71,9 @@ public class DegreeController {
     }
 
     // TODO: Registered users only
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<DegreeResource>> getAll() {
-        var degrees = degreeFetcher.fetchAll();
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<DegreeResource>> list() {
+        var degrees = degreeLister.fetchAll();
         return ResponseEntity.ok(degrees.stream()
                 .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
                 .toList());

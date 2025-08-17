@@ -3,7 +3,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.instructor;
 import com.mufidgu.pastpapers.domain.instructor.Instructor;
 import com.mufidgu.pastpapers.domain.instructor.api.AddInstructor;
 import com.mufidgu.pastpapers.domain.instructor.api.DeleteInstructor;
-import com.mufidgu.pastpapers.domain.instructor.api.FetchInstructor;
+import com.mufidgu.pastpapers.domain.instructor.api.ListInstructor;
 import com.mufidgu.pastpapers.domain.instructor.api.UpdateInstructor;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -24,7 +25,7 @@ public class InstructorController {
     private final AddInstructor instructorAdder;
     private final UpdateInstructor instructorUpdater;
     private final DeleteInstructor instructorDeleter;
-    private final FetchInstructor instructorFetcher;
+    private final ListInstructor instructorLister;
 
     // TODO: Admin Only
     @PostMapping("/add")
@@ -72,9 +73,9 @@ public class InstructorController {
     }
 
     // TODO: Registered Users Only
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<InstructorResource>> getAll() {
-        var instructors = instructorFetcher.fetchAll();
+    @GetMapping("/list")
+    public ResponseEntity<Iterable<InstructorResource>> list() {
+        List<Instructor> instructors = instructorLister.fetchAll();
         return ResponseEntity.ok(instructors.stream()
                 .map(i -> new InstructorResource(
                         i.id(),
