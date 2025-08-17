@@ -6,6 +6,7 @@ import com.mufidgu.pastpapers.domain.paper.api.*;
 import com.mufidgu.pastpapers.infrastructure.annotation.FileTypeRestriction;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Slf4j
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/paper")
 public class PaperController {
 
@@ -28,20 +30,6 @@ public class PaperController {
     private final UpdatePaper paperUpdater;
     private final DeletePaper paperDeleter;
     private final ListPaper paperLister;
-
-    public PaperController(
-            UploadPaper paperUploader,
-            DownloadPaper paperDownloader,
-            UpdatePaper paperUpdater,
-            DeletePaper paperDeleter,
-            ListPaper paperLister
-    ) {
-        this.paperUploader = paperUploader;
-        this.paperDownloader = paperDownloader;
-        this.paperUpdater = paperUpdater;
-        this.paperDeleter = paperDeleter;
-        this.paperLister = paperLister;
-    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> addPaper(

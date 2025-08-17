@@ -6,18 +6,16 @@ import com.mufidgu.pastpapers.domain.paper.enums.Shift;
 import com.mufidgu.pastpapers.domain.paper.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
 import ddd.DomainService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.UUID;
 
 @DomainService
+@RequiredArgsConstructor
 public class PaperUpdater implements UpdatePaper {
 
     private final Papers papers;
-
-    public PaperUpdater(Papers papers) {
-        this.papers = papers;
-    }
 
     public Paper update(
             UUID id,

@@ -7,6 +7,7 @@ import com.mufidgu.pastpapers.domain.course.api.FetchCourse;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/course")
 public class CourseController {
 
@@ -23,17 +25,6 @@ public class CourseController {
     private final UpdateCourse courseUpdater;
     private final DeleteCourse courseDeleter;
     private final FetchCourse courseFetcher;
-
-    public CourseController(
-            AddCourse courseAdder,
-            UpdateCourse courseUpdater,
-            DeleteCourse courseDeleter,
-            FetchCourse courseFetcher) {
-        this.courseAdder = courseAdder;
-        this.courseUpdater = courseUpdater;
-        this.courseDeleter = courseDeleter;
-        this.courseFetcher = courseFetcher;
-    }
 
     // TODO: Admin Only
     // Validation, Already Exists, Degree/University Does Not Exist
