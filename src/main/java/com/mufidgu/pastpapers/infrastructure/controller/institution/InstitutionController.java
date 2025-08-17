@@ -1,5 +1,6 @@
 package com.mufidgu.pastpapers.infrastructure.controller.institution;
 
+import com.mufidgu.pastpapers.domain.institution.Institution;
 import com.mufidgu.pastpapers.domain.institution.api.AddInstitution;
 import com.mufidgu.pastpapers.domain.institution.api.DeleteInstitution;
 import com.mufidgu.pastpapers.domain.institution.api.ListInstitution;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -29,7 +31,7 @@ public class InstitutionController {
     // Test Cases: Validation, Duplicate Short Name and Full Name,
     @PostMapping("/add")
     public ResponseEntity<InstitutionResource> add(@Valid @RequestBody InstitutionRequest request) {
-        var institution = institutionAdder.add(request.shortName, request.fullName);
+        Institution institution = institutionAdder.add(request.shortName, request.fullName);
         return ResponseEntity.ok(new InstitutionResource(
                 institution.id(),
                 institution.shortName(),
@@ -40,7 +42,7 @@ public class InstitutionController {
     // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<InstitutionResource>> list() {
-        var institutions = institutionLister.listAll();
+        List<Institution> institutions = institutionLister.listAll();
         return ResponseEntity.ok(institutions.stream()
                 .map(it -> new InstitutionResource(it.id(), it.shortName(), it.fullName()))
                 .toList());
@@ -53,8 +55,8 @@ public class InstitutionController {
             @RequestParam @NotBlank String institutionId,
             @Valid @RequestBody InstitutionRequest request
     ) {
-        var id = UUID.fromString(institutionId);
-        var institution = institutionUpdater.update(id, request.shortName, request.fullName);
+        UUID id = UUID.fromString(institutionId);
+        Institution institution = institutionUpdater.update(id, request.shortName, request.fullName);
         return ResponseEntity.ok(new InstitutionResource(
                 institution.id(),
                 institution.shortName(),
@@ -66,7 +68,7 @@ public class InstitutionController {
     // Test Cases: Validation, Institution Not Found
     @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(@RequestParam @NotBlank String institutionId) {
-        var id = UUID.fromString(institutionId);
+        UUID id = UUID.fromString(institutionId);
         institutionDeleter.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

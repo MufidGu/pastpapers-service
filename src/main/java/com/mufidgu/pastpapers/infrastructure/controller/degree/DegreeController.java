@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -73,7 +74,7 @@ public class DegreeController {
     // TODO: Registered users only
     @GetMapping("/list")
     public ResponseEntity<Iterable<DegreeResource>> list() {
-        var degrees = degreeLister.listAll();
+        List<Degree> degrees = degreeLister.listAll();
         return ResponseEntity.ok(degrees.stream()
                 .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
                 .toList());
