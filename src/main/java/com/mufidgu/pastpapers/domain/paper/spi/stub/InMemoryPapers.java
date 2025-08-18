@@ -12,7 +12,7 @@ import java.util.UUID;
 @Stub
 public class InMemoryPapers implements Papers {
 
-    HashMap<UUID, Paper> papers = new HashMap<>();
+    private final HashMap<UUID, Paper> papers = new HashMap<>();
 
     public Paper save(Paper paper) {
         papers.put(paper.id(), paper);
@@ -25,11 +25,6 @@ public class InMemoryPapers implements Papers {
 
     public void delete(UUID id) {
         papers.remove(id);
-    }
-
-    public Paper update(Paper paper) {
-        papers.put(paper.id(), paper);
-        return paper;
     }
 
     public List<Paper> findAll() {

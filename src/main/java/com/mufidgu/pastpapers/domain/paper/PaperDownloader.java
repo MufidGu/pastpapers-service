@@ -1,5 +1,7 @@
 package com.mufidgu.pastpapers.domain.paper;
 
+import com.mufidgu.pastpapers.domain.common.exception.InternalServerException;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.paper.api.DownloadPaper;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
@@ -18,7 +20,7 @@ public class PaperDownloader implements DownloadPaper {
 
     public File downloadPaper(UUID id) {
         Paper paper = papers.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Paper does not exist"));
+                .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
         try {
             byte[] contents = fileStorage.retrieve(id.toString());
@@ -28,7 +30,7 @@ public class PaperDownloader implements DownloadPaper {
                     contents
             );
         } catch (IOException e) {
-            throw new RuntimeException("Error retrieving file", e);
+            throw new InternalServerException("Unknown error occurred while handling file download");
         }
     }
 }

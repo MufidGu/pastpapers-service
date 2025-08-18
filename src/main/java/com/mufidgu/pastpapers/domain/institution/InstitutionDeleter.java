@@ -2,6 +2,7 @@ package com.mufidgu.pastpapers.domain.institution;
 
 import com.mufidgu.pastpapers.domain.institution.api.DeleteInstitution;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +16,7 @@ public class InstitutionDeleter implements DeleteInstitution {
 
     public void delete(UUID id) {
         institutions.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Institution does not exist.") // TODO: handle this properly
+                () -> new NotFoundException("Institution does not exist")
         );
         institutions.delete(id);
     }

@@ -1,5 +1,6 @@
 package com.mufidgu.pastpapers.domain.paper;
 
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.paper.api.UpdatePaper;
 import com.mufidgu.pastpapers.domain.paper.enums.Season;
 import com.mufidgu.pastpapers.domain.paper.enums.Shift;
@@ -32,7 +33,7 @@ public class PaperUpdater implements UpdatePaper {
             Date date
     ) {
         Paper originalPaper = papers.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Paper does not exist"));
+                .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
         Paper updatedPaper = new Paper(
                 originalPaper.id(),

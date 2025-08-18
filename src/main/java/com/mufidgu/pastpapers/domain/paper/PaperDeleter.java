@@ -3,6 +3,7 @@ package com.mufidgu.pastpapers.domain.paper;
 import com.mufidgu.pastpapers.domain.paper.api.DeletePaper;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class PaperDeleter implements DeletePaper {
 
     public void delete(UUID id) {
         Paper paper = papers.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Paper does not exist"));
+                .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
         try {
             fileStorage.delete(paper.id().toString());

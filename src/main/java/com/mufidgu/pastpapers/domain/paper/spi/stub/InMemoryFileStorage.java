@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 @Stub
 public class InMemoryFileStorage implements FileStorage {
-    HashMap<String, File> files = new HashMap<>();
+    private final HashMap<String, File> files = new HashMap<>();
 
     public void store(byte[] file, String fileName) {
         files.put(fileName, new File(fileName, file));
