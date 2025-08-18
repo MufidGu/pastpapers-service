@@ -14,7 +14,7 @@ public class InstitutionAdder implements AddInstitution {
 
     public Institution add(String shortName, String fullName) {
         institutions.findByShortNameAndFullName(shortName, fullName).ifPresent(u -> {
-            throw new ConflictException("Institution already exists."); // TODO: handle this properly
+            throw new ConflictException("Institution with same short name and full name already exists");
         });
         Institution institution = new Institution(shortName, fullName);
         return institutions.save(institution);

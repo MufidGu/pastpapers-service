@@ -19,16 +19,15 @@ public class DegreeUpdater implements UpdateDegree {
     private final Institutions institutions;
 
     public Degree update(UUID id, String shortName, String fullName, List<UUID> institutions) {
-        // TODO: better exception handling
         Degree degree = degrees.findById(id).orElseThrow(() -> new NotFoundException("Degree does not exist"));
         degrees.findByShortNameAndFullName(shortName, fullName).ifPresent(d -> {
             if (!d.id().equals(degree.id())) {
-                throw new ConflictException("Degree with the same short name and full name already exists");
+                throw new ConflictException("Degree with same short name and full name already exists");
             }
         });
         institutions.forEach(institutionId -> {
             if (this.institutions.findById(institutionId).isEmpty()) {
-                throw new NotFoundException("Institution not found with id: " + institutionId);
+                throw new NotFoundException("Institution with ID " + institutionId + " does not exist");
             }
         });
 

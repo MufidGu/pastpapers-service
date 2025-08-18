@@ -21,13 +21,12 @@ public class CourseUpdater implements UpdateCourse {
     private final Institutions institutions;
 
     public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
-        // TODO: better error handling
         Course existingCourse = courses.findById(id)
                 .orElseThrow(() -> new NotFoundException("Course does not exist"));
         courses.findByShortNameAndFullName(shortName, fullName)
                 .ifPresent(c -> {
                     if (!c.id().equals(existingCourse.id())) {
-                        throw new ConflictException("Course with the same short name and full name already exists");
+                        throw new ConflictException("Course with same short name and full name already exists");
                     }
                 });
         degreeIds.forEach(degreeId -> {

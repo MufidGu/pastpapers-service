@@ -24,7 +24,7 @@ public class InstructorAdder implements AddInstructor {
     public Instructor add(String fullName, List<UUID> courseIds, List<UUID> institutionIds) {
         instructors.findByFullName(fullName)
                 .ifPresent(instructor -> {
-                    throw new ConflictException("Instructor with the same full name already exists");
+                    throw new ConflictException("Instructor with same full name already exists");
                 });
 
         courseIds.forEach(id -> courses.findById(id)

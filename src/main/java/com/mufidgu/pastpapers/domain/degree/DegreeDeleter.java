@@ -15,7 +15,6 @@ public class DegreeDeleter implements DeleteDegree {
     private final Degrees degrees;
 
     public void delete(UUID id) {
-        // TODO: better exception handling
         degrees.findById(id)
                 .orElseThrow(() -> new NotFoundException("Degree does not exist"));
 

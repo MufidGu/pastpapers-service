@@ -21,10 +21,9 @@ public class CourseAdder implements AddCourse {
     private final Institutions institutions;
 
     public Course add(String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
-        // TODO: better error handling
         courses.findByShortNameAndFullName(shortName, fullName)
                 .ifPresent(course -> {
-                    throw new ConflictException("Course with the same short name and full name already exists");
+                    throw new ConflictException("Course with same short name and full name already exists");
                 });
         degreeIds.forEach(id -> degrees.findById(id)
                 .orElseThrow(() -> new NotFoundException("Degree with ID " + id + " does not exist")));

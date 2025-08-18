@@ -19,13 +19,12 @@ public class DegreeAdder implements AddDegree {
     private final Institutions institutions;
 
     public Degree add(String shortName, String fullName, List<UUID> institutions) {
-        // TODO: better exception handling
         degrees.findByShortNameAndFullName(shortName, fullName).ifPresent(d -> {
-            throw new ConflictException("Degree with the same short name and full name already exists");
+            throw new ConflictException("Degree with same short name and full name already exists");
         });
         institutions.forEach(institutionId -> {
             if (this.institutions.findById(institutionId).isEmpty()) {
-                throw new NotFoundException("Institution not found with id: " + institutionId);
+                throw new NotFoundException("Institution with ID " + institutionId + " does not exist");
             }
         });
 

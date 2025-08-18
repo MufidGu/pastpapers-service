@@ -28,7 +28,7 @@ public class InstructorUpdater implements UpdateInstructor {
         instructors.findByFullName(fullName)
                 .ifPresent(instructor -> {
                     if (!instructor.id().equals(existingInstructor.id())) {
-                        throw new ConflictException("Instructor with the same full name already exists");
+                        throw new ConflictException("Instructor with same full name already exists");
                     }
                 });
 

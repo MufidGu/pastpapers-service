@@ -16,7 +16,7 @@ public class CourseDeleter implements DeleteCourse {
 
     public void delete(UUID courseId) {
         courses.findById(courseId)
-                .orElseThrow(() -> new NotFoundException("Course with ID " + courseId + " does not exist"));
+                .orElseThrow(() -> new NotFoundException("Course does not exist"));
         courses.delete(courseId);
     }
 }

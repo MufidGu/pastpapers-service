@@ -16,7 +16,7 @@ public class InstitutionDeleter implements DeleteInstitution {
 
     public void delete(UUID id) {
         institutions.findById(id).orElseThrow(
-                () -> new NotFoundException("Institution does not exist.") // TODO: handle this properly
+                () -> new NotFoundException("Institution does not exist")
         );
         institutions.delete(id);
     }
