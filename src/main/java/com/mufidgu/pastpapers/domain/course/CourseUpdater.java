@@ -4,6 +4,8 @@ import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
+import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,21 +23,21 @@ public class CourseUpdater implements UpdateCourse {
     public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
         // TODO: better error handling
         Course existingCourse = courses.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Course does not exist"));
+                .orElseThrow(() -> new NotFoundException("Course does not exist"));
         courses.findByShortNameAndFullName(shortName, fullName)
                 .ifPresent(c -> {
                     if (!c.id().equals(existingCourse.id())) {
-                        throw new IllegalArgumentException("Course with the same short name and full name already exists");
+                        throw new ConflictException("Course with the same short name and full name already exists");
                     }
                 });
         degreeIds.forEach(degreeId -> {
             if (degrees.findById(degreeId).isEmpty()) {
-                throw new IllegalArgumentException("Degree with ID " + degreeId + " does not exist");
+                throw new NotFoundException("Degree with ID " + degreeId + " does not exist");
             }
         });
         institutionIds.forEach(institutionId -> {
             if (institutions.findById(institutionId).isEmpty()) {
-                throw new IllegalArgumentException("Institution with ID " + institutionId + " does not exist");
+                throw new NotFoundException("Institution with ID " + institutionId + " does not exist");
             }
         });
 

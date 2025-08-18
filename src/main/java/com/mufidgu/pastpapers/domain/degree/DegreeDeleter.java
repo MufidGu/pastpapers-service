@@ -2,6 +2,7 @@ package com.mufidgu.pastpapers.domain.degree;
 
 import com.mufidgu.pastpapers.domain.degree.api.DeleteDegree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,7 @@ public class DegreeDeleter implements DeleteDegree {
     public void delete(UUID id) {
         // TODO: better exception handling
         degrees.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Degree does not exist"));
+                .orElseThrow(() -> new NotFoundException("Degree does not exist"));
 
         degrees.delete(id);
     }

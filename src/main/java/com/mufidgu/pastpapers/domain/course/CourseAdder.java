@@ -4,6 +4,8 @@ import com.mufidgu.pastpapers.domain.course.api.AddCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
+import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,12 +24,12 @@ public class CourseAdder implements AddCourse {
         // TODO: better error handling
         courses.findByShortNameAndFullName(shortName, fullName)
                 .ifPresent(course -> {
-                    throw new IllegalArgumentException("Course with the same short name and full name already exists");
+                    throw new ConflictException("Course with the same short name and full name already exists");
                 });
         degreeIds.forEach(id -> degrees.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Degree with ID " + id + " does not exist")));
+                .orElseThrow(() -> new NotFoundException("Degree with ID " + id + " does not exist")));
         institutionIds.forEach(id -> institutions.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Institution with ID " + id + " does not exist")));
+                .orElseThrow(() -> new NotFoundException("Institution with ID " + id + " does not exist")));
 
         Course course = new Course(shortName, fullName, degreeIds, institutionIds);
         return courses.save(course);

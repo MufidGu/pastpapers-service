@@ -1,5 +1,6 @@
 package com.mufidgu.pastpapers.domain.paper;
 
+import com.mufidgu.pastpapers.domain.common.exception.InternalServerException;
 import com.mufidgu.pastpapers.domain.paper.api.UploadPaper;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
@@ -42,7 +43,7 @@ public class PaperUploader implements UploadPaper {
 
             return paper.id();
         } catch (Exception e) {
-            throw new RuntimeException("Unknown error occurred while uploading the paper", e);
+            throw new InternalServerException("Unknown error occurred while handling file upload");
         }
     }
 }

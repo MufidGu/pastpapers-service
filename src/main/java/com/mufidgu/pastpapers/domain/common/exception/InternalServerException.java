@@ -1,0 +1,6 @@
+package com.mufidgu.pastpapers.domain.common.exception;
+
+public class InternalServerException extends RuntimeException {
+    public InternalServerException(String message) {
+    }
+}
