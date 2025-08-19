@@ -27,7 +27,6 @@ public class InstitutionController {
     private final UpdateInstitution institutionUpdater;
     private final DeleteInstitution institutionDeleter;
 
-    // TODO: Admin Only
     // Test Cases: Validation, Duplicate Short Name and Full Name,
     @PostMapping("/add")
     public ResponseEntity<InstitutionResource> add(@Valid @RequestBody InstitutionRequest request) {
@@ -39,7 +38,6 @@ public class InstitutionController {
         ));
     }
 
-    // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<InstitutionResource>> list() {
         List<Institution> institutions = institutionLister.listAll();
@@ -48,7 +46,6 @@ public class InstitutionController {
                 .toList());
     }
 
-    // TODO: Admin Only
     // Test Cases: Validation, Duplicate Short Name and Full Name,
     @PutMapping("/update")
     public ResponseEntity<InstitutionResource> update(
@@ -64,7 +61,6 @@ public class InstitutionController {
         ));
     }
 
-    // TODO: Admin Only
     // Test Cases: Validation, Institution Not Found
     @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(@RequestParam @NotBlank String institutionId) {

@@ -118,19 +118,19 @@ public class PaperController {
     public ResponseEntity<List<PaperResource>> list() {
         List<Paper> papers = paperLister.listAll();
         List<PaperResource> paperResources = papers.stream()
-                .map(paper -> new PaperResource(
-                        paper.id(),
-                        paper.instructorId(),
-                        paper.courseId(),
-                        paper.type(),
-                        paper.institutionId(),
-                        paper.degreeId(),
-                        paper.shift(),
-                        paper.semester(),
-                        paper.section(),
-                        paper.year(),
-                        paper.season(),
-                        paper.date()
+                .map(it -> new PaperResource(
+                        it.id(),
+                        it.instructorId(),
+                        it.courseId(),
+                        it.type(),
+                        it.institutionId(),
+                        it.degreeId(),
+                        it.shift(),
+                        it.semester(),
+                        it.section(),
+                        it.year(),
+                        it.season(),
+                        it.date()
                 )).toList();
         return ResponseEntity.ok(paperResources);
     }
