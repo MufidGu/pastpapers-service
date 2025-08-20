@@ -1,16 +1,17 @@
 package com.mufidgu.pastpapers.infrastructure.controller.instructor;
 
-import com.mufidgu.pastpapers.domain.instructor.Instructor;
-import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.institution.Institution;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
+import com.mufidgu.pastpapers.domain.instructor.Instructor;
+import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
 import ddd.Stub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @Import(DomainConfiguration.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class InstructorControllerTest {
 
     @Autowired

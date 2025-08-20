@@ -4,6 +4,8 @@ import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.Degree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
+import com.mufidgu.pastpapers.domain.institution.Institution;
+import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.domain.instructor.Instructor;
 import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.domain.paper.Paper;
@@ -12,13 +14,12 @@ import com.mufidgu.pastpapers.domain.paper.enums.Shift;
 import com.mufidgu.pastpapers.domain.paper.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
-import com.mufidgu.pastpapers.domain.institution.Institution;
-import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
 import ddd.Stub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @Import(DomainConfiguration.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class PaperControllerTest {
 
     @Autowired

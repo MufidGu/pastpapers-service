@@ -27,7 +27,6 @@ public class DegreeController {
     private final UpdateDegree degreeUpdater;
     private final DeleteDegree degreeDeleter;
 
-    // TODO: Admin only
     // Test cases validation, Already Exists, Institution Does Not Exist
     @PostMapping("/add")
     public ResponseEntity<DegreeResource> add(@Valid @RequestBody DegreeRequest request) {
@@ -40,7 +39,6 @@ public class DegreeController {
         ));
     }
 
-    // TODO: Admin only
     // Test cases validation, Degree/Institution Does Not Exist
     @PostMapping("/update")
     public ResponseEntity<DegreeResource> update(
@@ -62,7 +60,6 @@ public class DegreeController {
         ));
     }
 
-    // TODO: Admin only
     // Test cases validation, Degree Does Not Exist
     @PostMapping("/delete")
     public ResponseEntity<Void> delete(@RequestParam @NotBlank String degreeId) {
@@ -71,12 +68,11 @@ public class DegreeController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // TODO: Registered users only
     @GetMapping("/list")
     public ResponseEntity<Iterable<DegreeResource>> list() {
         List<Degree> degrees = degreeLister.listAll();
         return ResponseEntity.ok(degrees.stream()
-                .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
+                .map(it -> new DegreeResource(it.id(), it.shortName(), it.fullName(), it.institutions()))
                 .toList());
     }
 }
