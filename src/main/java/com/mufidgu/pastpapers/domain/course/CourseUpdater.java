@@ -1,11 +1,11 @@
 package com.mufidgu.pastpapers.domain.course;
 
+import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
-import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
-import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -29,16 +29,10 @@ public class CourseUpdater implements UpdateCourse {
                         throw new ConflictException("Course with same short name and full name already exists");
                     }
                 });
-        degreeIds.forEach(degreeId -> {
-            if (degrees.findById(degreeId).isEmpty()) {
-                throw new NotFoundException("Degree with ID " + degreeId + " does not exist");
-            }
-        });
-        institutionIds.forEach(institutionId -> {
-            if (institutions.findById(institutionId).isEmpty()) {
-                throw new NotFoundException("Institution with ID " + institutionId + " does not exist");
-            }
-        });
+        degreeIds.forEach(degreeId -> degrees.findById(degreeId)
+                .orElseThrow(() -> new NotFoundException("Degree with ID " + degreeId + " does not exist")));
+        institutionIds.forEach(institutionId -> institutions.findById(institutionId)
+                .orElseThrow(() -> new NotFoundException("Institution with ID " + institutionId + " does not exist")));
 
         // TODO: Revisit this when adding database to project
         return courses.save(

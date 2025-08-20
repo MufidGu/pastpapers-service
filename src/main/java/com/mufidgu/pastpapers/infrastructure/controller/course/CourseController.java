@@ -27,7 +27,6 @@ public class CourseController {
     private final DeleteCourse courseDeleter;
     private final ListCourse courseLister;
 
-    // TODO: Admin Only
     // Validation, Already Exists, Degree/Institution Does Not Exist
     @PostMapping("/add")
     public ResponseEntity<CourseResource> add(@Valid @RequestBody CourseRequest request) {
@@ -37,16 +36,11 @@ public class CourseController {
                 request.degreeIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new CourseResource(
-                course.id(),
-                course.shortName(),
-                course.fullName(),
-                course.degreeIds(),
-                course.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                CourseResource.from(course)
+        );
     }
 
-    // TODO: Admin Only
     @PutMapping("/update")
     public ResponseEntity<CourseResource> update(
             @NotBlank @RequestParam String courseId,
@@ -60,16 +54,11 @@ public class CourseController {
                 request.degreeIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new CourseResource(
-                course.id(),
-                course.shortName(),
-                course.fullName(),
-                course.degreeIds(),
-                course.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                CourseResource.from(course)
+        );
     }
 
-    // TODO: Admin Only
     @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(@NotBlank @RequestParam String courseId) {
         UUID id = UUID.fromString(courseId);
@@ -77,17 +66,11 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<CourseResource>> list() {
         List<Course> courses = courseLister.listAll();
         return ResponseEntity.ok(courses.stream()
-                .map(c -> new CourseResource(
-                        c.id(),
-                        c.shortName(),
-                        c.fullName(),
-                        c.degreeIds(),
-                        c.institutionIds()))
+                .map(CourseResource::from)
                 .toList());
     }
 

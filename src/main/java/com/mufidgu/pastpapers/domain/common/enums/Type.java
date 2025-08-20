@@ -1,4 +1,4 @@
-package com.mufidgu.pastpapers.domain.paper.enums;
+package com.mufidgu.pastpapers.domain.common.enums;
 
 public enum Type {
     QUIZ,

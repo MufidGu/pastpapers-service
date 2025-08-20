@@ -1,9 +1,9 @@
 package com.mufidgu.pastpapers.domain.paper;
 
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.paper.api.DeletePaper;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
-import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,8 @@ public class PaperDeleter implements DeletePaper {
     private final Papers papers;
     private final FileStorage fileStorage;
 
-    public void delete(UUID id) {
-        Paper paper = papers.findById(id)
+    public void delete(UUID id, String userId) {
+        Paper paper = papers.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
         try {

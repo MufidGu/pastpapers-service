@@ -1,11 +1,11 @@
 package com.mufidgu.pastpapers.domain.course;
 
+import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.course.api.AddCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
-import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
-import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 

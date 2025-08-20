@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +35,7 @@ public class PaperController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> add(
+            @AuthenticationPrincipal Jwt jwt,
             @Valid
             @FileTypeRestriction(
                     acceptedTypes = {
@@ -47,7 +50,8 @@ public class PaperController {
         try {
             UUID paperId = paperUploader.uploadPaper(
                     file.getInputStream(),
-                    file.getOriginalFilename()
+                    file.getOriginalFilename(),
+                    jwt.getSubject()
             );
             return ResponseEntity.ok(paperId.toString());
         } catch (IOException e) {
@@ -68,48 +72,27 @@ public class PaperController {
 
     @PutMapping("/update")
     public ResponseEntity<PaperResource> update(
+            @AuthenticationPrincipal Jwt jwt,
             @NotBlank @RequestParam String paperId,
             @Valid @RequestBody PaperRequest request
     ) {
         UUID id = UUID.fromString(paperId);
         Paper paper = paperUpdater.update(
-                id,
-                request.instructorId,
-                request.courseId,
-                request.type,
-                request.institutionId,
-                request.degreeId,
-                request.shift,
-                request.semester,
-                request.section,
-                request.year,
-                request.season,
-                request.date
+                request.toPaper(id),
+                jwt.getSubject()
         );
         return ResponseEntity.ok(
-                new PaperResource(
-                        paper.id(),
-                        paper.instructorId(),
-                        paper.courseId(),
-                        paper.type(),
-                        paper.institutionId(),
-                        paper.degreeId(),
-                        paper.shift(),
-                        paper.semester(),
-                        paper.section(),
-                        paper.year(),
-                        paper.season(),
-                        paper.date()
-                )
+                PaperResource.from(paper)
         );
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(
+            @AuthenticationPrincipal Jwt jwt,
             @NotBlank @RequestParam String paperId
     ) {
         UUID id = UUID.fromString(paperId);
-        paperDeleter.delete(id);
+        paperDeleter.delete(id, jwt.getSubject());
         return ResponseEntity.ok("Paper deleted successfully");
     }
 
@@ -118,20 +101,8 @@ public class PaperController {
     public ResponseEntity<List<PaperResource>> list() {
         List<Paper> papers = paperLister.listAll();
         List<PaperResource> paperResources = papers.stream()
-                .map(paper -> new PaperResource(
-                        paper.id(),
-                        paper.instructorId(),
-                        paper.courseId(),
-                        paper.type(),
-                        paper.institutionId(),
-                        paper.degreeId(),
-                        paper.shift(),
-                        paper.semester(),
-                        paper.section(),
-                        paper.year(),
-                        paper.season(),
-                        paper.date()
-                )).toList();
+                .map(PaperResource::from)
+                .toList();
         return ResponseEntity.ok(paperResources);
     }
 }

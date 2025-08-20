@@ -17,22 +17,9 @@ public class PaperUploader implements UploadPaper {
     private final Papers papers;
     private final FileStorage fileStorage;
 
-    public UUID uploadPaper(InputStream stream, String originalFilename) {
+    public UUID uploadPaper(InputStream stream, String originalFilename, String userId) {
         try {
-            Paper paper = new Paper(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    originalFilename
-            );
+            Paper paper = Paper.createFromFileName(originalFilename, userId);
 
             fileStorage.store(
                     stream.readAllBytes(),

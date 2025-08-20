@@ -1,8 +1,8 @@
 package com.mufidgu.pastpapers.domain.course;
 
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.course.api.DeleteCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
-import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 

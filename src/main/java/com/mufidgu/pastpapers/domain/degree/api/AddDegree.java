@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AddDegree {
-    Degree add(String shortName, String fullName, List<UUID> institutions);
+    Degree add(String shortName, String fullName, List<UUID> institutionIds);
 }

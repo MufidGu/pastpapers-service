@@ -1,8 +1,8 @@
 package com.mufidgu.pastpapers.domain.degree;
 
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.degree.api.DeleteDegree;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 

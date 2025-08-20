@@ -27,20 +27,15 @@ public class DegreeController {
     private final UpdateDegree degreeUpdater;
     private final DeleteDegree degreeDeleter;
 
-    // TODO: Admin only
     // Test cases validation, Already Exists, Institution Does Not Exist
     @PostMapping("/add")
     public ResponseEntity<DegreeResource> add(@Valid @RequestBody DegreeRequest request) {
         Degree degree = degreeAdder.add(request.shortName, request.fullName, request.institutionIds);
-        return ResponseEntity.ok(new DegreeResource(
-                degree.id(),
-                degree.shortName(),
-                degree.fullName(),
-                degree.institutions()
-        ));
+        return ResponseEntity.ok(
+                DegreeResource.from(degree)
+        );
     }
 
-    // TODO: Admin only
     // Test cases validation, Degree/Institution Does Not Exist
     @PostMapping("/update")
     public ResponseEntity<DegreeResource> update(
@@ -54,15 +49,11 @@ public class DegreeController {
                 request.fullName,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new DegreeResource(
-                degree.id(),
-                degree.shortName(),
-                degree.fullName(),
-                degree.institutions()
-        ));
+        return ResponseEntity.ok(
+                DegreeResource.from(degree)
+        );
     }
 
-    // TODO: Admin only
     // Test cases validation, Degree Does Not Exist
     @PostMapping("/delete")
     public ResponseEntity<Void> delete(@RequestParam @NotBlank String degreeId) {
@@ -71,12 +62,11 @@ public class DegreeController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // TODO: Registered users only
     @GetMapping("/list")
     public ResponseEntity<Iterable<DegreeResource>> list() {
         List<Degree> degrees = degreeLister.listAll();
         return ResponseEntity.ok(degrees.stream()
-                .map(d -> new DegreeResource(d.id(), d.shortName(), d.fullName(), d.institutions()))
+                .map(DegreeResource::from)
                 .toList());
     }
 }

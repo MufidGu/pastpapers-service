@@ -30,4 +30,8 @@ public class InMemoryPapers implements Papers {
     public List<Paper> findAll() {
         return papers.values().stream().toList();
     }
+
+    public Optional<Paper> findByIdAndUserId(UUID id, String userId) {
+        return papers.values().stream().filter(p -> p.id().equals(id) && p.userId().equals(userId)).findFirst();
+    }
 }

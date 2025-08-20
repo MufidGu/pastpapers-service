@@ -27,7 +27,6 @@ public class InstructorController {
     private final DeleteInstructor instructorDeleter;
     private final ListInstructor instructorLister;
 
-    // TODO: Admin Only
     @PostMapping("/add")
     public ResponseEntity<InstructorResource> add(@Valid @RequestBody InstructorRequest request) {
         Instructor instructor = instructorAdder.add(
@@ -35,15 +34,11 @@ public class InstructorController {
                 request.courseIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new InstructorResource(
-                instructor.id(),
-                instructor.fullName(),
-                instructor.courseIds(),
-                instructor.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                InstructorResource.from(instructor)
+        );
     }
 
-    // TODO: Admin Only
     @PutMapping("/update")
     public ResponseEntity<InstructorResource> update(
             @NotBlank @RequestParam String instructorId,
@@ -56,15 +51,11 @@ public class InstructorController {
                 request.courseIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new InstructorResource(
-                instructor.id(),
-                instructor.fullName(),
-                instructor.courseIds(),
-                instructor.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                InstructorResource.from(instructor)
+        );
     }
 
-    // TODO: Admin Only
     @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(@NotBlank @RequestParam String instructorId) {
         UUID id = UUID.fromString(instructorId);
@@ -72,16 +63,11 @@ public class InstructorController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // TODO: Registered Users Only
     @GetMapping("/list")
     public ResponseEntity<Iterable<InstructorResource>> list() {
         List<Instructor> instructors = instructorLister.listAll();
         return ResponseEntity.ok(instructors.stream()
-                .map(i -> new InstructorResource(
-                        i.id(),
-                        i.fullName(),
-                        i.courseIds(),
-                        i.institutionIds()))
+                .map(InstructorResource::from)
                 .toList());
     }
 }
