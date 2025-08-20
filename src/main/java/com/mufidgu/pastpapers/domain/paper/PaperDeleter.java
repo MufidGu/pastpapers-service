@@ -1,9 +1,9 @@
 package com.mufidgu.pastpapers.domain.paper;
 
+import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.paper.api.DeletePaper;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
-import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

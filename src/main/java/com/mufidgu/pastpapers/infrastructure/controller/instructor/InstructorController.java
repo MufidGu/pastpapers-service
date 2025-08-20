@@ -34,12 +34,9 @@ public class InstructorController {
                 request.courseIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new InstructorResource(
-                instructor.id(),
-                instructor.fullName(),
-                instructor.courseIds(),
-                instructor.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                InstructorResource.from(instructor)
+        );
     }
 
     @PutMapping("/update")
@@ -54,12 +51,9 @@ public class InstructorController {
                 request.courseIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new InstructorResource(
-                instructor.id(),
-                instructor.fullName(),
-                instructor.courseIds(),
-                instructor.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                InstructorResource.from(instructor)
+        );
     }
 
     @DeleteMapping("/delete")
@@ -73,11 +67,7 @@ public class InstructorController {
     public ResponseEntity<Iterable<InstructorResource>> list() {
         List<Instructor> instructors = instructorLister.listAll();
         return ResponseEntity.ok(instructors.stream()
-                .map(it -> new InstructorResource(
-                        it.id(),
-                        it.fullName(),
-                        it.courseIds(),
-                        it.institutionIds()))
+                .map(InstructorResource::from)
                 .toList());
     }
 }

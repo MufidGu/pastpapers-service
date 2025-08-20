@@ -1,8 +1,8 @@
 package com.mufidgu.pastpapers.domain.institution;
 
+import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
 import com.mufidgu.pastpapers.domain.institution.api.AddInstitution;
 import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
-import com.mufidgu.pastpapers.domain.common.exception.ConflictException;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,8 +16,9 @@ public class InstitutionAdder implements AddInstitution {
         institutions.findByShortNameAndFullName(shortName, fullName).ifPresent(u -> {
             throw new ConflictException("Institution with same short name and full name already exists");
         });
-        Institution institution = new Institution(shortName, fullName);
-        return institutions.save(institution);
+        return institutions.save(
+                new Institution(shortName, fullName)
+        );
     }
 
 }

@@ -36,13 +36,9 @@ public class CourseController {
                 request.degreeIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new CourseResource(
-                course.id(),
-                course.shortName(),
-                course.fullName(),
-                course.degreeIds(),
-                course.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                CourseResource.from(course)
+        );
     }
 
     @PutMapping("/update")
@@ -58,13 +54,9 @@ public class CourseController {
                 request.degreeIds,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new CourseResource(
-                course.id(),
-                course.shortName(),
-                course.fullName(),
-                course.degreeIds(),
-                course.institutionIds()
-        ));
+        return ResponseEntity.ok(
+                CourseResource.from(course)
+        );
     }
 
     @DeleteMapping("/delete")
@@ -78,12 +70,7 @@ public class CourseController {
     public ResponseEntity<Iterable<CourseResource>> list() {
         List<Course> courses = courseLister.listAll();
         return ResponseEntity.ok(courses.stream()
-                .map(it -> new CourseResource(
-                        it.id(),
-                        it.shortName(),
-                        it.fullName(),
-                        it.degreeIds(),
-                        it.institutionIds()))
+                .map(CourseResource::from)
                 .toList());
     }
 

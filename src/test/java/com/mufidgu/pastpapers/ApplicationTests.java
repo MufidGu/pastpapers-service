@@ -43,7 +43,9 @@ class ApplicationTests {
                                     jwt.claim("sub", "1234567890");
                                     jwt.claim("email", "user@example.com");
                                     jwt.claim("scope", "paper.read");
-                                })))
+                                })
+                        )
+                )
                 .andExpect(status().isOk());
     }
 

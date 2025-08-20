@@ -1,10 +1,11 @@
 package com.mufidgu.pastpapers.infrastructure.controller.paper;
 
-import com.mufidgu.pastpapers.domain.paper.enums.Season;
-import com.mufidgu.pastpapers.domain.paper.enums.Shift;
-import com.mufidgu.pastpapers.domain.paper.enums.Type;
+import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Shift;
+import com.mufidgu.pastpapers.domain.common.enums.Type;
+import com.mufidgu.pastpapers.domain.paper.Paper;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public record PaperResource(
@@ -19,6 +20,23 @@ public record PaperResource(
         Character section,
         Integer year,
         Season season,
-        Date date
+        LocalDate date
 ) {
+
+    public static PaperResource from(Paper paper) {
+        return new PaperResource(
+                paper.id(),
+                paper.instructorId(),
+                paper.courseId(),
+                paper.type(),
+                paper.institutionId(),
+                paper.degreeId(),
+                paper.shift(),
+                paper.semester(),
+                paper.section(),
+                paper.year(),
+                paper.season(),
+                paper.date()
+        );
+    }
 }

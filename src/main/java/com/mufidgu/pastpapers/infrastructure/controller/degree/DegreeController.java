@@ -31,12 +31,9 @@ public class DegreeController {
     @PostMapping("/add")
     public ResponseEntity<DegreeResource> add(@Valid @RequestBody DegreeRequest request) {
         Degree degree = degreeAdder.add(request.shortName, request.fullName, request.institutionIds);
-        return ResponseEntity.ok(new DegreeResource(
-                degree.id(),
-                degree.shortName(),
-                degree.fullName(),
-                degree.institutions()
-        ));
+        return ResponseEntity.ok(
+                DegreeResource.from(degree)
+        );
     }
 
     // Test cases validation, Degree/Institution Does Not Exist
@@ -52,12 +49,9 @@ public class DegreeController {
                 request.fullName,
                 request.institutionIds
         );
-        return ResponseEntity.ok(new DegreeResource(
-                degree.id(),
-                degree.shortName(),
-                degree.fullName(),
-                degree.institutions()
-        ));
+        return ResponseEntity.ok(
+                DegreeResource.from(degree)
+        );
     }
 
     // Test cases validation, Degree Does Not Exist
@@ -72,7 +66,7 @@ public class DegreeController {
     public ResponseEntity<Iterable<DegreeResource>> list() {
         List<Degree> degrees = degreeLister.listAll();
         return ResponseEntity.ok(degrees.stream()
-                .map(it -> new DegreeResource(it.id(), it.shortName(), it.fullName(), it.institutions()))
+                .map(DegreeResource::from)
                 .toList());
     }
 }

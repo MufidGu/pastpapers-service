@@ -31,18 +31,16 @@ public class InstitutionController {
     @PostMapping("/add")
     public ResponseEntity<InstitutionResource> add(@Valid @RequestBody InstitutionRequest request) {
         Institution institution = institutionAdder.add(request.shortName, request.fullName);
-        return ResponseEntity.ok(new InstitutionResource(
-                institution.id(),
-                institution.shortName(),
-                institution.fullName()
-        ));
+        return ResponseEntity.ok(
+                InstitutionResource.from(institution)
+        );
     }
 
     @GetMapping("/list")
     public ResponseEntity<Iterable<InstitutionResource>> list() {
         List<Institution> institutions = institutionLister.listAll();
         return ResponseEntity.ok(institutions.stream()
-                .map(it -> new InstitutionResource(it.id(), it.shortName(), it.fullName()))
+                .map(InstitutionResource::from)
                 .toList());
     }
 
@@ -54,11 +52,9 @@ public class InstitutionController {
     ) {
         UUID id = UUID.fromString(institutionId);
         Institution institution = institutionUpdater.update(id, request.shortName, request.fullName);
-        return ResponseEntity.ok(new InstitutionResource(
-                institution.id(),
-                institution.shortName(),
-                institution.fullName()
-        ));
+        return ResponseEntity.ok(
+                InstitutionResource.from(institution)
+        );
     }
 
     // Test Cases: Validation, Institution Not Found

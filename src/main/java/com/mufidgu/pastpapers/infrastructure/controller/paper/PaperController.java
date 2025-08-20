@@ -73,34 +73,10 @@ public class PaperController {
     ) {
         UUID id = UUID.fromString(paperId);
         Paper paper = paperUpdater.update(
-                id,
-                request.instructorId,
-                request.courseId,
-                request.type,
-                request.institutionId,
-                request.degreeId,
-                request.shift,
-                request.semester,
-                request.section,
-                request.year,
-                request.season,
-                request.date
+                request.toPaper(id)
         );
         return ResponseEntity.ok(
-                new PaperResource(
-                        paper.id(),
-                        paper.instructorId(),
-                        paper.courseId(),
-                        paper.type(),
-                        paper.institutionId(),
-                        paper.degreeId(),
-                        paper.shift(),
-                        paper.semester(),
-                        paper.section(),
-                        paper.year(),
-                        paper.season(),
-                        paper.date()
-                )
+                PaperResource.from(paper)
         );
     }
 
@@ -118,20 +94,8 @@ public class PaperController {
     public ResponseEntity<List<PaperResource>> list() {
         List<Paper> papers = paperLister.listAll();
         List<PaperResource> paperResources = papers.stream()
-                .map(it -> new PaperResource(
-                        it.id(),
-                        it.instructorId(),
-                        it.courseId(),
-                        it.type(),
-                        it.institutionId(),
-                        it.degreeId(),
-                        it.shift(),
-                        it.semester(),
-                        it.section(),
-                        it.year(),
-                        it.season(),
-                        it.date()
-                )).toList();
+                .map(PaperResource::from)
+                .toList();
         return ResponseEntity.ok(paperResources);
     }
 }

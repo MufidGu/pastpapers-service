@@ -55,16 +55,16 @@ public class InstructorControllerTest {
     @Test
     void should_add_instructor() throws Exception {
         mockMvc.perform(
-                post("/instructor/add")
-                        .contentType("application/json")
-                        .content(String.format("""
-                                {
-                                    "fullName": "John Doe",
-                                    "courseIds": ["%s"],
-                                    "institutionIds": ["%s"]
-                                }
-                                """, testCourse.id(), testInstitution.id()))
-        )
+                        post("/instructor/add")
+                                .contentType("application/json")
+                                .content(String.format("""
+                                        {
+                                            "fullName": "John Doe",
+                                            "courseIds": ["%s"],
+                                            "institutionIds": ["%s"]
+                                        }
+                                        """, testCourse.id(), testInstitution.id()))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.fullName").value("John Doe"))
@@ -78,9 +78,9 @@ public class InstructorControllerTest {
         instructors.save(new Instructor("Jane Smith", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                get("/instructor/list")
-                        .contentType("application/json")
-        )
+                        get("/instructor/list")
+                                .contentType("application/json")
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isNotEmpty())
@@ -93,16 +93,16 @@ public class InstructorControllerTest {
         Instructor instructor = instructors.save(new Instructor("Robert Brown", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                put("/instructor/update?instructorId=" + instructor.id())
-                        .contentType("application/json")
-                        .content(String.format("""
-                                {
-                                    "fullName": "Robert Green",
-                                    "courseIds": ["%s"],
-                                    "institutionIds": ["%s"]
-                                }
-                                """, testCourse.id(), testInstitution.id()))
-        )
+                        put("/instructor/update?instructorId=" + instructor.id())
+                                .contentType("application/json")
+                                .content(String.format("""
+                                        {
+                                            "fullName": "Robert Green",
+                                            "courseIds": ["%s"],
+                                            "institutionIds": ["%s"]
+                                        }
+                                        """, testCourse.id(), testInstitution.id()))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(instructor.id().toString()))
                 .andExpect(jsonPath("$.fullName").value("Robert Green"))
@@ -116,8 +116,8 @@ public class InstructorControllerTest {
         Instructor instructor = instructors.save(new Instructor("David Wilson", List.of(testCourse.id()), List.of(testInstitution.id())));
 
         mockMvc.perform(
-                delete("/instructor/delete?instructorId=" + instructor.id())
-        )
+                        delete("/instructor/delete?instructorId=" + instructor.id())
+                )
                 .andExpect(status().isOk());
 
         // Verify that the instructor is deleted

@@ -2,15 +2,9 @@ package com.mufidgu.pastpapers.domain.paper;
 
 import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.paper.api.UpdatePaper;
-import com.mufidgu.pastpapers.domain.paper.enums.Season;
-import com.mufidgu.pastpapers.domain.paper.enums.Shift;
-import com.mufidgu.pastpapers.domain.paper.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Date;
-import java.util.UUID;
 
 @DomainService
 @RequiredArgsConstructor
@@ -18,41 +12,12 @@ public class PaperUpdater implements UpdatePaper {
 
     private final Papers papers;
 
-    public Paper update(
-            UUID id,
-            UUID instructorId,
-            UUID courseId,
-            Type type,
-            UUID institutionId,
-            UUID degreeId,
-            Shift shift,
-            Integer semester,
-            Character section,
-            Integer year,
-            Season season,
-            Date date
-    ) {
-        Paper originalPaper = papers.findById(id)
+    public Paper update(Paper update) {
+        Paper originalPaper = papers.findById(update.id())
                 .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
-        Paper updatedPaper = new Paper(
-                originalPaper.id(),
-                instructorId,
-                courseId,
-                type,
-                institutionId,
-                degreeId,
-                shift,
-                semester,
-                section,
-                year,
-                season,
-                date,
-                originalPaper.fileName()
-        );
+        Paper updatedPaper = originalPaper.updateWith(update);
 
-        updatedPaper = papers.save(updatedPaper);
-
-        return updatedPaper;
+        return papers.save(updatedPaper);
     }
 }

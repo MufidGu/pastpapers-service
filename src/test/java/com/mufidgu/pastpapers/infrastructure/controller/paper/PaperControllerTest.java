@@ -1,5 +1,8 @@
 package com.mufidgu.pastpapers.infrastructure.controller.paper;
 
+import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Shift;
+import com.mufidgu.pastpapers.domain.common.enums.Type;
 import com.mufidgu.pastpapers.domain.course.Course;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.Degree;
@@ -9,9 +12,6 @@ import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import com.mufidgu.pastpapers.domain.instructor.Instructor;
 import com.mufidgu.pastpapers.domain.instructor.spi.Instructors;
 import com.mufidgu.pastpapers.domain.paper.Paper;
-import com.mufidgu.pastpapers.domain.paper.enums.Season;
-import com.mufidgu.pastpapers.domain.paper.enums.Shift;
-import com.mufidgu.pastpapers.domain.paper.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.spi.FileStorage;
 import com.mufidgu.pastpapers.domain.paper.spi.Papers;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
@@ -29,7 +29,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -92,7 +91,7 @@ public class PaperControllerTest {
                 'A',
                 LocalDate.now().getYear(),
                 Season.SPRING,
-                Date.valueOf(LocalDate.of(2023, 5, 15)),
+                LocalDate.of(2023, 5, 15),
                 "test.pdf"
         ));
 
@@ -113,9 +112,9 @@ public class PaperControllerTest {
         );
 
         mockMvc.perform(
-                multipart("/paper/upload")
-                        .file(file)
-        )
+                        multipart("/paper/upload")
+                                .file(file)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().string(matchesPattern("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")));
     }
@@ -126,35 +125,35 @@ public class PaperControllerTest {
         // This would typically be done by the domain service in a real test
 
         mockMvc.perform(
-                get("/paper/download")
-                        .param("paperId", testPaper.id().toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-        )
+                        get("/paper/download")
+                                .param("paperId", testPaper.id().toString())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk());
     }
 
     @Test
     void should_update_paper() throws Exception {
         mockMvc.perform(
-                put("/paper/update")
-                        .param("paperId", testPaper.id().toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(String.format("""
-                                {
-                                    "instructorId": "%s",
-                                    "courseId": "%s",
-                                    "type": "MIDTERM",
-                                    "institutionId": "%s",
-                                    "degreeId": "%s",
-                                    "shift": "EVENING",
-                                    "semester": 6,
-                                    "section": "B",
-                                    "year": 2024,
-                                    "season": "FALL",
-                                    "date": "2024-10-15"
-                                }
-                                """, testInstructor.id(), testCourse.id(), testInstitution.id(), testDegree.id()))
-        )
+                        put("/paper/update")
+                                .param("paperId", testPaper.id().toString())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(String.format("""
+                                        {
+                                            "instructorId": "%s",
+                                            "courseId": "%s",
+                                            "type": "MIDTERM",
+                                            "institutionId": "%s",
+                                            "degreeId": "%s",
+                                            "shift": "EVENING",
+                                            "semester": 6,
+                                            "section": "B",
+                                            "year": 2024,
+                                            "season": "FALL",
+                                            "date": "2024-10-15"
+                                        }
+                                        """, testInstructor.id(), testCourse.id(), testInstitution.id(), testDegree.id()))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(testPaper.id().toString()))
                 .andExpect(jsonPath("$.instructorId").value(testInstructor.id().toString()))
@@ -172,9 +171,9 @@ public class PaperControllerTest {
     @Test
     void should_delete_paper() throws Exception {
         mockMvc.perform(
-                delete("/paper/delete")
-                        .param("paperId", testPaper.id().toString())
-        )
+                        delete("/paper/delete")
+                                .param("paperId", testPaper.id().toString())
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().string("Paper deleted successfully"));
     }
@@ -182,9 +181,9 @@ public class PaperControllerTest {
     @Test
     void should_list_all_papers() throws Exception {
         mockMvc.perform(
-                get("/paper/list")
-                        .contentType(MediaType.APPLICATION_JSON)
-        )
+                        get("/paper/list")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$").isNotEmpty())
