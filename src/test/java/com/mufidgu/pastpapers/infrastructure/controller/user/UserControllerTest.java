@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
 
     private final String TEST_GOOGLE_ID = "1234567890";
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired

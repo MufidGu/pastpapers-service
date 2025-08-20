@@ -18,8 +18,8 @@ public class PaperDeleter implements DeletePaper {
     private final Papers papers;
     private final FileStorage fileStorage;
 
-    public void delete(UUID id) {
-        Paper paper = papers.findById(id)
+    public void delete(UUID id, String userId) {
+        Paper paper = papers.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
         try {

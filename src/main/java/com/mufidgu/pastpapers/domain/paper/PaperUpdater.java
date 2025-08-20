@@ -12,8 +12,8 @@ public class PaperUpdater implements UpdatePaper {
 
     private final Papers papers;
 
-    public Paper update(Paper update) {
-        Paper originalPaper = papers.findById(update.id())
+    public Paper update(Paper update, String userId) {
+        Paper originalPaper = papers.findByIdAndUserId(update.id(), userId)
                 .orElseThrow(() -> new NotFoundException("Paper does not exist"));
 
         Paper updatedPaper = originalPaper.updateWith(update);

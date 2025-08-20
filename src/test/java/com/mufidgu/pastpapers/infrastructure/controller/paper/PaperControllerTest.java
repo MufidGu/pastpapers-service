@@ -19,7 +19,6 @@ import ddd.Stub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,13 +34,15 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 @Import(DomainConfiguration.class)
-@AutoConfigureMockMvc(addFilters = false)
 public class PaperControllerTest {
+
+    private final String TEST_GOOGLE_ID = "1234567890";
 
     @Autowired
     private MockMvc mockMvc;
@@ -81,6 +82,7 @@ public class PaperControllerTest {
         UUID id = UUID.randomUUID();
         testPaper = papers.save(new Paper(
                 id,
+                TEST_GOOGLE_ID,
                 testInstructor.id(),
                 testCourse.id(),
                 Type.FINAL,
@@ -112,8 +114,8 @@ public class PaperControllerTest {
         );
 
         mockMvc.perform(
-                        multipart("/paper/upload")
-                                .file(file)
+                        multipart("/paper/upload").file(file)
+                                .with(jwt().jwt(jwt -> jwt.subject(TEST_GOOGLE_ID)))
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(matchesPattern("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")));
@@ -126,6 +128,7 @@ public class PaperControllerTest {
 
         mockMvc.perform(
                         get("/paper/download")
+                                .with(jwt().jwt(jwt -> jwt.subject(TEST_GOOGLE_ID)))
                                 .param("paperId", testPaper.id().toString())
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -136,6 +139,7 @@ public class PaperControllerTest {
     void should_update_paper() throws Exception {
         mockMvc.perform(
                         put("/paper/update")
+                                .with(jwt().jwt(jwt -> jwt.subject(TEST_GOOGLE_ID)))
                                 .param("paperId", testPaper.id().toString())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(String.format("""
@@ -172,6 +176,7 @@ public class PaperControllerTest {
     void should_delete_paper() throws Exception {
         mockMvc.perform(
                         delete("/paper/delete")
+                                .with(jwt().jwt(jwt -> jwt.subject(TEST_GOOGLE_ID)))
                                 .param("paperId", testPaper.id().toString())
                 )
                 .andExpect(status().isOk())
@@ -182,6 +187,7 @@ public class PaperControllerTest {
     void should_list_all_papers() throws Exception {
         mockMvc.perform(
                         get("/paper/list")
+                                .with(jwt().jwt(jwt -> jwt.subject(TEST_GOOGLE_ID)))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())

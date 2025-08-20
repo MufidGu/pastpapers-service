@@ -37,6 +37,7 @@ public class PaperRequest {
     public Paper toPaper(UUID id) {
         return new Paper(
                 id,
+                null,
                 this.instructorId,
                 this.courseId,
                 this.type,

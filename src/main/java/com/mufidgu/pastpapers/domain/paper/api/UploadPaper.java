@@ -5,5 +5,5 @@ import java.io.InputStream;
 import java.util.UUID;
 
 public interface UploadPaper {
-    UUID uploadPaper(InputStream file, String originalFilename);
+    UUID uploadPaper(InputStream file, String originalFileName, String userId);
 }

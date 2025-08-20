@@ -14,4 +14,6 @@ public interface Papers {
     void delete(UUID id);
 
     List<Paper> findAll();
+
+    Optional<Paper>findByIdAndUserId(UUID id, String userId);
 }

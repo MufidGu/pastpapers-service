@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public record Paper(
         UUID id,
+        String userId,
         UUID instructorId,
         UUID courseId,
         Type type,
@@ -23,6 +24,7 @@ public record Paper(
         String fileName
 ) {
     public Paper(
+            String userId,
             UUID instructorId,
             UUID courseId,
             Type type,
@@ -38,6 +40,7 @@ public record Paper(
     ) {
         this(
                 UUID.randomUUID(),
+                userId,
                 instructorId,
                 courseId,
                 type,
@@ -53,8 +56,9 @@ public record Paper(
         );
     }
 
-    public static Paper createFromFileName(String fileName) {
+    public static Paper createFromFileName(String fileName, String userId) {
         return new Paper(
+                userId,
                 null,
                 null,
                 null,
@@ -73,6 +77,7 @@ public record Paper(
     public Paper updateWith(Paper updatedUser) {
         return new Paper(
                 this.id,
+                this.userId,
                 updatedUser.instructorId,
                 updatedUser.courseId,
                 updatedUser.type,
