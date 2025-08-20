@@ -14,10 +14,10 @@ public class UserUpdater implements UpdateUser {
     private final FetchUser userFetcher;
 
     public User updateUser(User update) {
-        User orignalUser = userFetcher.fetch(update.googleId());
+        User originalUser = userFetcher.fetch(update.googleId());
 
         return users.save(
-                orignalUser.updateWith(update)
+                originalUser.updateWith(update)
         );
     }
 }

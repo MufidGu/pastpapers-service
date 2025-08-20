@@ -15,5 +15,5 @@ public interface Papers {
 
     List<Paper> findAll();
 
-    Optional<Paper>findByIdAndUserId(UUID id, String userId);
+    Optional<Paper> findByIdAndUserId(UUID id, String userId);
 }

@@ -32,8 +32,7 @@ public class CourseUpdater implements UpdateCourse {
         degreeIds.forEach(degreeId -> degrees.findById(degreeId)
                 .orElseThrow(() -> new NotFoundException("Degree with ID " + degreeId + " does not exist")));
         institutionIds.forEach(institutionId -> institutions.findById(institutionId)
-                .orElseThrow(() -> new NotFoundException("Institution with ID " + institutionId + " does not exist"))
-        );
+                .orElseThrow(() -> new NotFoundException("Institution with ID " + institutionId + " does not exist")));
 
         // TODO: Revisit this when adding database to project
         return courses.save(
