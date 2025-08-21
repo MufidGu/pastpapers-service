@@ -11,6 +11,8 @@ permissions:
 env:
   PROD_PORT: 8443
   DEV_PORT: 8444
+  PROD_ADMIN_GOOGLE_IDS: ${{ secrets.PROD_ADMIN_GOOGLE_IDS }}
+  DEV_ADMIN_GOOGLE_IDS: ${{ secrets.DEV_ADMIN_GOOGLE_IDS }}
 
 jobs:
   run-tests:
@@ -81,9 +83,11 @@ jobs:
           if [[ "$TAG" == "main" ]]; then
             echo "profile=prod" >> $GITHUB_OUTPUT
             echo "port=${{ env.PROD_PORT }}" >> $GITHUB_OUTPUT
+            echo "admin_google_ids=${{ env.PROD_ADMIN_GOOGLE_IDS }}" >> $GITHUB_OUTPUT
           else
             echo "profile=dev" >> $GITHUB_OUTPUT
             echo "port=${{ env.DEV_PORT }}" >> $GITHUB_OUTPUT
+            echo "admin_google_ids=${{ env.DEV_ADMIN_GOOGLE_IDS }}" >> $GITHUB_OUTPUT
           fi
 
           echo "repo_lc=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
@@ -110,6 +114,7 @@ jobs:
           # Start new container
           docker run -d \
             -e SPRING_PROFILES_ACTIVE=${{ steps.vars.outputs.profile }} \
+            -e APP_SECURITY_ADMIN_GOOGLE_IDS=${{ steps.vars.outputs.admin_google_ids }} \
             -p ${{ steps.vars.outputs.port }}:8080 \
             --name $CONTAINER_NAME \
             ghcr.io/${{ steps.vars.outputs.repo_lc }}:${{ steps.vars.outputs.tag }}
