@@ -1,6 +1,7 @@
 package com.mufidgu.pastpapers.infrastructure.controller.user;
 
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 import com.mufidgu.pastpapers.domain.user.User;
 import org.hibernate.validator.constraints.Range;
@@ -17,10 +18,10 @@ public class UserRequest {
 
     public Season sessionStartSeason;
 
-    @Range(min = 1, max = 6)
+    @Range(min = 1, max = 8)
     public Integer semester;
 
-    public Character section;
+    public Section section;
 
     public Shift shift;
 

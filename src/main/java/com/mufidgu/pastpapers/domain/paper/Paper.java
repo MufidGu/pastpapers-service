@@ -1,6 +1,7 @@
 package com.mufidgu.pastpapers.domain.paper;
 
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 import com.mufidgu.pastpapers.domain.common.enums.Type;
 
@@ -17,7 +18,7 @@ public record Paper(
         UUID degreeId,
         Shift shift,
         Integer semester,
-        Character section,
+        Section section,
         Integer year,
         Season season,
         LocalDate date,
@@ -32,7 +33,7 @@ public record Paper(
             UUID degreeId,
             Shift shift,
             Integer semester,
-            Character section,
+            Section section,
             Integer year,
             Season season,
             LocalDate date,

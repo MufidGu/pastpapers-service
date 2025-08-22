@@ -1,6 +1,7 @@
 package com.mufidgu.pastpapers.domain.user;
 
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ public record User(
         LocalDate sessionStartDate,
         Season sessionStartSeason,
         Integer semester,
-        Character section,
+        Section section,
         Shift shift
 ) {
     public static User createFromGoogleId(String googleId) {

@@ -1,6 +1,7 @@
 package com.mufidgu.pastpapers.infrastructure.controller.paper;
 
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 import com.mufidgu.pastpapers.domain.common.enums.Type;
 import com.mufidgu.pastpapers.domain.course.Course;
@@ -90,7 +91,7 @@ public class PaperControllerTest {
                 testDegree.id(),
                 Shift.MORNING,
                 5,
-                'A',
+                Section.A,
                 LocalDate.now().getYear(),
                 Season.SPRING,
                 LocalDate.of(2023, 5, 15),

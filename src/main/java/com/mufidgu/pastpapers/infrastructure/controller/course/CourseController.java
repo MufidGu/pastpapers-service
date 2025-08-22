@@ -67,7 +67,7 @@ public class CourseController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Iterable<CourseResource>> list() {
+    public ResponseEntity<List<CourseResource>> list() {
         List<Course> courses = courseLister.listAll();
         return ResponseEntity.ok(courses.stream()
                 .map(CourseResource::from)

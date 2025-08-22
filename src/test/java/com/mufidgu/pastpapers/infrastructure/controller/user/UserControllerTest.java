@@ -2,6 +2,7 @@ package com.mufidgu.pastpapers.infrastructure.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 import com.mufidgu.pastpapers.domain.user.User;
 import com.mufidgu.pastpapers.infrastructure.configuration.DomainConfiguration;
@@ -54,7 +55,7 @@ public class UserControllerTest {
         updateRequest.sessionStartDate = LocalDate.of(2024, 2, 1);
         updateRequest.sessionStartSeason = Season.SPRING;
         updateRequest.semester = 2;
-        updateRequest.section = 'B';
+        updateRequest.section = Section.B;
         updateRequest.shift = Shift.EVENING;
 
         mockMvc.perform(
