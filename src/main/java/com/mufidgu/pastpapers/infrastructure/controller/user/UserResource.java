@@ -1,6 +1,7 @@
 package com.mufidgu.pastpapers.infrastructure.controller.user;
 
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 import com.mufidgu.pastpapers.domain.user.User;
 
@@ -14,7 +15,7 @@ public record UserResource(
         LocalDate sessionStartDate,
         Season sessionStartSeason,
         Integer semester,
-        Character section,
+        Section section,
         Shift shift
 ) {
     public static UserResource from(User user) {

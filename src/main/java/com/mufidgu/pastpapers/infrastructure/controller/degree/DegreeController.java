@@ -63,7 +63,7 @@ public class DegreeController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Iterable<DegreeResource>> list() {
+    public ResponseEntity<List<DegreeResource>> list() {
         List<Degree> degrees = degreeLister.listAll();
         return ResponseEntity.ok(degrees.stream()
                 .map(DegreeResource::from)

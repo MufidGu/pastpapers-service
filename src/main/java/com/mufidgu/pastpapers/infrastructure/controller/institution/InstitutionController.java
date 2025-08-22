@@ -37,7 +37,7 @@ public class InstitutionController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Iterable<InstitutionResource>> list() {
+    public ResponseEntity<List<InstitutionResource>> list() {
         List<Institution> institutions = institutionLister.listAll();
         return ResponseEntity.ok(institutions.stream()
                 .map(InstitutionResource::from)

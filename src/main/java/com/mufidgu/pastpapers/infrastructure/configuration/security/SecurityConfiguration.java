@@ -14,18 +14,21 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRoleConverter jwtRoleConverter) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/course/add").hasRole("ADMIN")
-                        .requestMatchers("/course/update").hasRole("ADMIN")
-                        .requestMatchers("/course/delete").hasRole("ADMIN")
-                        .requestMatchers("/degree/add").hasRole("ADMIN")
-                        .requestMatchers("/degree/update").hasRole("ADMIN")
-                        .requestMatchers("/degree/delete").hasRole("ADMIN")
-                        .requestMatchers("/institution/add").hasRole("ADMIN")
-                        .requestMatchers("/institution/update").hasRole("ADMIN")
-                        .requestMatchers("/institution/delete").hasRole("ADMIN")
-                        .requestMatchers("/instructor/add").hasRole("ADMIN")
-                        .requestMatchers("/instructor/update").hasRole("ADMIN")
-                        .requestMatchers("/instructor/delete").hasRole("ADMIN")
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(
+                                "/course/add",
+                                "/course/update",
+                                "/course/delete",
+                                "/degree/add",
+                                "/degree/update",
+                                "/degree/delete",
+                                "/institution/add",
+                                "/institution/update",
+                                "/institution/delete",
+                                "/instructor/add",
+                                "/instructor/update",
+                                "/instructor/delete"
+                        ).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(

@@ -1,6 +1,7 @@
 package com.mufidgu.pastpapers.infrastructure.controller.paper;
 
 import com.mufidgu.pastpapers.domain.common.enums.Season;
+import com.mufidgu.pastpapers.domain.common.enums.Section;
 import com.mufidgu.pastpapers.domain.common.enums.Shift;
 import com.mufidgu.pastpapers.domain.common.enums.Type;
 import com.mufidgu.pastpapers.domain.paper.Paper;
@@ -22,10 +23,10 @@ public class PaperRequest {
 
     public Shift shift;
 
-    @Range(min = 1, max = 6)
+    @Range(min = 1, max = 8)
     public Integer semester;
 
-    public Character section;
+    public Section section;
 
     @Range(min = 2000, max = 3000)
     public Integer year;
