@@ -17,6 +17,8 @@ env:
 jobs:
   run-tests:
     runs-on: self-hosted
+    env:
+      SPRING_PROFILES_ACTIVE: test
     steps:
       - uses: actions/checkout@v4
 
