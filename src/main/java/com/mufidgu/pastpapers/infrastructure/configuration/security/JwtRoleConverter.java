@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,7 +25,12 @@ public class JwtRoleConverter implements Converter<Jwt, AbstractAuthenticationTo
     }
 
     public AbstractAuthenticationToken convert(@Nullable Jwt jwt) {
-        Collection<GrantedAuthority> defaultAuthorities = defaultConverter.convert(Objects.requireNonNull(jwt));
+
+        if (jwt  == null) {
+            return null;
+        }
+
+        Collection<GrantedAuthority> defaultAuthorities = defaultConverter.convert(jwt);
 
         String googleId = jwt.getClaimAsString("sub");
 
