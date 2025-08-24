@@ -1,4 +1,9 @@
 # Past Papers Service
+<!-- Badges -->
+[![Java 21](https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
+![Spring Boot 3.x](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?logo=spring-boot)
+[![Build Status](https://github.com/MufidGu/pastpapers-service/actions/workflows/build-deploy.yml/badge.svg)](https://github.com/MufidGu/pastpapers-service/actions/workflows/build-deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 This repository contains the source code for the backend service of the Past Papers application. It is a robust, scalable, and secure RESTful API built with Spring Boot, designed to manage and deliver educational content efficiently.
 
@@ -121,7 +126,6 @@ The project is configured with a CI/CD pipeline using GitHub Actions. The pipeli
     - Pushes the image to the GitHub Container Registry.
     - Deploys the container to the server.
 
----
 
 ## 🔮 Future Work
 
