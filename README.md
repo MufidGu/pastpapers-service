@@ -6,7 +6,6 @@ This repository contains the source code for the backend service of the Past Pap
 
 **Companion Android Application (Figma Design):** [View on Figma](https://www.figma.com/design/KfHVSo1iniYjBlhp3ZTGVV/Past-Papers-v1?node-id=123-705&t=YAI4BeEBi5sHIeSA-1)
 
----
 
 ## ✨ Features
 
@@ -19,7 +18,6 @@ This repository contains the source code for the backend service of the Past Pap
 - **Robust Error Handling:** A global exception handler that provides meaningful error messages.
 - **Input Validation:** Comprehensive validation of all incoming requests.
 
----
 
 ## 🏛️ Architectural Overview
 
@@ -34,7 +32,6 @@ This project is built using the principles of **Hexagonal Architecture** (also k
 
 This clean separation ensures the core logic is robust and can be adapted to different technologies (e.g., swapping from REST to gRPC) with minimal changes to the domain.
 
----
 
 ## 🛠️ Technology Stack
 
@@ -64,7 +61,6 @@ This clean separation ensures the core logic is robust and can be adapted to dif
 - **Docker:** Containerizes the application and its environment, ensuring consistency from development to production.
 - **GitHub Actions:** Orchestrates a full CI/CD pipeline for automated testing, building, and deploying the application as a Docker container.
 
----
 
 ## 🚀 Getting Started
 
@@ -94,7 +90,6 @@ This clean separation ensures the core logic is robust and can be adapted to dif
 
 The application will be available at `http://localhost:8080`.
 
----
 
 ## 🔒 Security
 
@@ -104,7 +99,6 @@ The application is secured using Spring Security's OAuth2 Resource Server. All e
 - **Authorization:** Role-based access control (RBAC) is implemented to restrict access to certain endpoints based on user roles. Admin-level access is managed via a configurable list of Google User IDs.
 
 
----
 
 ## 🧪 Testing
 
@@ -115,7 +109,6 @@ The project includes a suite of unit and integration tests to ensure the quality
   ./gradlew test
   ```
 
----
 
 ## 🔄 CI/CD
 
