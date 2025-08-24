@@ -129,10 +129,6 @@ The project is configured with a CI/CD pipeline using GitHub Actions. The pipeli
     - Pushes the image to the GitHub Container Registry.
     - Deploys the container to the server.
 
-## 💻 Code Style and Conventions
-
-This project follows the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html). The code is formatted using the default IntelliJ IDEA code formatter.
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue to report a bug or suggest a feature.
