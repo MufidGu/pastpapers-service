@@ -5,7 +5,6 @@ import com.mufidgu.pastpapers.domain.common.exception.NotFoundException;
 import com.mufidgu.pastpapers.domain.course.api.UpdateCourse;
 import com.mufidgu.pastpapers.domain.course.spi.Courses;
 import com.mufidgu.pastpapers.domain.degree.spi.Degrees;
-import com.mufidgu.pastpapers.domain.institution.spi.Institutions;
 import ddd.DomainService;
 import lombok.RequiredArgsConstructor;
 
@@ -18,9 +17,8 @@ public class CourseUpdater implements UpdateCourse {
 
     private final Courses courses;
     private final Degrees degrees;
-    private final Institutions institutions;
 
-    public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
+    public Course update(UUID id, String shortName, String fullName, List<UUID> degreeIds) {
         Course existingCourse = courses.findById(id)
                 .orElseThrow(() -> new NotFoundException("Course does not exist"));
         courses.findByShortNameAndFullName(shortName, fullName)
@@ -31,8 +29,6 @@ public class CourseUpdater implements UpdateCourse {
                 });
         degreeIds.forEach(degreeId -> degrees.findById(degreeId)
                 .orElseThrow(() -> new NotFoundException("Degree with ID " + degreeId + " does not exist")));
-        institutionIds.forEach(institutionId -> institutions.findById(institutionId)
-                .orElseThrow(() -> new NotFoundException("Institution with ID " + institutionId + " does not exist")));
 
         // TODO: Revisit this when adding database to project
         return courses.save(
@@ -40,8 +36,7 @@ public class CourseUpdater implements UpdateCourse {
                         existingCourse.id(),
                         shortName,
                         fullName,
-                        degreeIds,
-                        institutionIds
+                        degreeIds
                 )
         );
     }

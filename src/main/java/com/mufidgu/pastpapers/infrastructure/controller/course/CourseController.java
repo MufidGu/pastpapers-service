@@ -33,8 +33,7 @@ public class CourseController {
         Course course = courseAdder.add(
                 request.shortName,
                 request.fullName,
-                request.degreeIds,
-                request.institutionIds
+                request.degreeIds
         );
         return ResponseEntity.ok(
                 CourseResource.from(course)
@@ -51,8 +50,7 @@ public class CourseController {
                 id,
                 request.shortName,
                 request.fullName,
-                request.degreeIds,
-                request.institutionIds
+                request.degreeIds
         );
         return ResponseEntity.ok(
                 CourseResource.from(course)

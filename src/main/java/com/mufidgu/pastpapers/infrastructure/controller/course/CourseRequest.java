@@ -16,6 +16,4 @@ public class CourseRequest {
     public String fullName;
 
     public List<UUID> degreeIds;
-
-    public List<UUID> institutionIds;
 }

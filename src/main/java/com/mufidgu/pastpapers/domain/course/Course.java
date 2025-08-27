@@ -7,10 +7,9 @@ public record Course(
         UUID id,
         String shortName,
         String fullName,
-        List<UUID> degreeIds,
-        List<UUID> institutionIds
+        List<UUID> degreeIds
 ) {
-    public Course(String shortName, String fullName, List<UUID> degreeIds, List<UUID> institutionIds) {
-        this(UUID.randomUUID(), shortName, fullName, degreeIds, institutionIds);
+    public Course(String shortName, String fullName, List<UUID> degreeIds) {
+        this(UUID.randomUUID(), shortName, fullName, degreeIds);
     }
 }
