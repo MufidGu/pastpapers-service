@@ -21,7 +21,7 @@ public class InstructorAdder implements AddInstructor {
     private final Institutions institutions;
 
     @Override
-    public Instructor add(String fullName, List<UUID> courseIds, List<UUID> institutionIds) {
+    public Instructor add(String fullName, List<UUID> courseIds) {
         instructors.findByFullName(fullName)
                 .ifPresent(instructor -> {
                     throw new ConflictException("Instructor with same full name already exists");
@@ -30,10 +30,7 @@ public class InstructorAdder implements AddInstructor {
         courseIds.forEach(id -> courses.findById(id)
                 .orElseThrow(() -> new NotFoundException("Course with ID " + id + " does not exist")));
 
-        institutionIds.forEach(id -> institutions.findById(id)
-                .orElseThrow(() -> new NotFoundException("Institution with ID " + id + " does not exist")));
-
-        Instructor instructor = new Instructor(fullName, courseIds, institutionIds);
+        Instructor instructor = new Instructor(fullName, courseIds);
         return instructors.save(instructor);
     }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AddInstructor {
-    Instructor add(String fullName, List<UUID> courseIds, List<UUID> institutionIds);
+    Instructor add(String fullName, List<UUID> courseIds);
 }

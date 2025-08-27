@@ -6,10 +6,9 @@ import java.util.UUID;
 public record Instructor(
         UUID id,
         String fullName,
-        List<UUID> courseIds,
-        List<UUID> institutionIds
+        List<UUID> courseIds
 ) {
-    public Instructor(String fullName, List<UUID> courseIds, List<UUID> institutionIds) {
-        this(UUID.randomUUID(), fullName, courseIds, institutionIds);
+    public Instructor(String fullName, List<UUID> courseIds) {
+        this(UUID.randomUUID(), fullName, courseIds);
     }
 }

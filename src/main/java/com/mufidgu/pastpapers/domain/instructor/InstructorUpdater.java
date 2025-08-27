@@ -21,7 +21,7 @@ public class InstructorUpdater implements UpdateInstructor {
     private final Institutions institutions;
 
     @Override
-    public Instructor update(UUID id, String fullName, List<UUID> courseIds, List<UUID> institutionIds) {
+    public Instructor update(UUID id, String fullName, List<UUID> courseIds) {
         Instructor existingInstructor = instructors.findById(id)
                 .orElseThrow(() -> new NotFoundException("Instructor does not exist"));
 
@@ -38,18 +38,11 @@ public class InstructorUpdater implements UpdateInstructor {
             }
         });
 
-        institutionIds.forEach(institutionId -> {
-            if (institutions.findById(institutionId).isEmpty()) {
-                throw new NotFoundException("Institution with ID " + institutionId + " does not exist");
-            }
-        });
-
         return instructors.save(
                 new Instructor(
                         existingInstructor.id(),
                         fullName,
-                        courseIds,
-                        institutionIds
+                        courseIds
                 )
         );
     }

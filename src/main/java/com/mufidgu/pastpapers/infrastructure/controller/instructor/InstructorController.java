@@ -31,8 +31,7 @@ public class InstructorController {
     public ResponseEntity<InstructorResource> add(@Valid @RequestBody InstructorRequest request) {
         Instructor instructor = instructorAdder.add(
                 request.fullName,
-                request.courseIds,
-                request.institutionIds
+                request.courseIds
         );
         return ResponseEntity.ok(
                 InstructorResource.from(instructor)
@@ -48,8 +47,7 @@ public class InstructorController {
         Instructor instructor = instructorUpdater.update(
                 id,
                 request.fullName,
-                request.courseIds,
-                request.institutionIds
+                request.courseIds
         );
         return ResponseEntity.ok(
                 InstructorResource.from(instructor)

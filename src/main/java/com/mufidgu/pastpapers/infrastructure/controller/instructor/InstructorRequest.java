@@ -11,5 +11,4 @@ public class InstructorRequest {
     @Length(min = 2, max = 30)
     public String fullName;
     public List<UUID> courseIds;
-    public List<UUID> institutionIds;
 }
