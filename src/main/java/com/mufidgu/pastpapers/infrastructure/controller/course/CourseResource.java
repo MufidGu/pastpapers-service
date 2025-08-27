@@ -9,16 +9,14 @@ public record CourseResource(
         UUID id,
         String shortName,
         String fullName,
-        List<UUID> degreeIds,
-        List<UUID> institutionIds
+        List<UUID> degreeIds
 ) {
     public static CourseResource from(Course course) {
         return new CourseResource(
                 course.id(),
                 course.shortName(),
                 course.fullName(),
-                course.degreeIds(),
-                course.institutionIds()
+                course.degreeIds()
         );
     }
 }
