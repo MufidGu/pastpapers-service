@@ -8,6 +8,7 @@ import com.mufidgu.pastpapers.infrastructure.persistence.repository.DegreeJpaRep
 import com.mufidgu.pastpapers.infrastructure.persistence.repository.InstitutionJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
 /**
  * JPA adapter implementation for the Degrees SPI.
  * Handles many-to-many relationships with institutions.
+ * Disabled in test profile to allow stub implementations.
  */
 @Repository
 @Primary
+@Profile("!test")
 @RequiredArgsConstructor
 @Transactional
 public class DegreeRepositoryAdapter implements Degrees {

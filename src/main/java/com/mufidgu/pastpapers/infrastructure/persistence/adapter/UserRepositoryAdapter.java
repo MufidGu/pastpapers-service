@@ -10,6 +10,7 @@ import com.mufidgu.pastpapers.infrastructure.persistence.repository.InstitutionJ
 import com.mufidgu.pastpapers.infrastructure.persistence.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,11 @@ import java.util.Optional;
 /**
  * JPA adapter implementation for the Users SPI.
  * Handles many-to-one relationships with institution and degree.
+ * Disabled in test profile to allow stub implementations.
  */
 @Repository
 @Primary
+@Profile("!test")
 @RequiredArgsConstructor
 @Transactional
 public class UserRepositoryAdapter implements Users {

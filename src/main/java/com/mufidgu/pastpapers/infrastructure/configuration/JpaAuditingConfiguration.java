@@ -2,6 +2,7 @@ package com.mufidgu.pastpapers.infrastructure.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.Authentication;
@@ -13,9 +14,11 @@ import java.util.Optional;
 /**
  * Configuration for JPA Auditing.
  * Automatically populates createdBy and updatedBy fields using the authenticated user's information.
+ * Disabled in test profile to allow stub implementations.
  */
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
+@Profile("!test")
 public class JpaAuditingConfiguration {
 
     /**
