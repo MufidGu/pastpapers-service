@@ -53,6 +53,12 @@ This clean separation ensures the core logic is robust and can be adapted to dif
 - **Spring Boot 3:** Provides a robust, convention-over-configuration framework for building stand-alone, production-grade applications.
 - **Spring Web:** The foundation for building the RESTful API with embedded Tomcat server.
 
+### Database & Persistence
+- **PostgreSQL:** Production-grade relational database for persistent data storage.
+- **Spring Data JPA:** Simplifies database access with the Java Persistence API and Hibernate ORM.
+- **Flyway:** Database migration tool for versioned schema management.
+- **Two-User Security Model:** Separate DDL and DML database users for enhanced security.
+
 ### Security
 - **Spring Security:** Implements comprehensive security measures, configured to act as an OAuth2 Resource Server.
 - **JWT Authentication:** Secures endpoints by validating JSON Web Tokens, ensuring that all requests are properly authenticated.
@@ -80,6 +86,7 @@ This clean separation ensures the core logic is robust and can be adapted to dif
 
 - Java 21
 - Gradle
+- PostgreSQL 12+ (for database persistence)
 
 ### Running the Application
 
@@ -91,16 +98,36 @@ This clean separation ensures the core logic is robust and can be adapted to dif
     ```bash
     cd pastpapers-service
     ```
-3.  **Build the application:**
+3.  **Set up the database:**
+    ```bash
+    # See DATABASE_INTEGRATION.md for detailed setup instructions
+    cd database-setup
+    psql -U postgres -f 01-create-database-and-users.sql
+    ```
+4.  **Configure environment variables:**
+    ```bash
+    export DB_URL=jdbc:postgresql://localhost:5432/pastpapers_db
+    export DB_DDL_USERNAME=pastpapers_ddl_user
+    export DB_DDL_PASSWORD=ddl_password
+    export DB_DML_USERNAME=pastpapers_dml_user
+    export DB_DML_PASSWORD=dml_password
+    ```
+5.  **Build the application:**
     ```bash
     ./gradlew clean bootJar
     ```
-4.  **Run the application:**
+6.  **Run the application:**
     ```bash
     java -jar build/libs/*.jar
     ```
+7.  **Grant DML permissions (first run only):**
+    ```bash
+    psql -U postgres -d pastpapers_db -f database-setup/02-grant-dml-permissions.sql
+    ```
 
 The application will be available at `http://localhost:8080`.
+
+For detailed database setup, configuration, and troubleshooting, see [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md).
 
 ## 🔒 Security
 
@@ -133,6 +160,26 @@ The project is configured with a CI/CD pipeline using GitHub Actions. The pipeli
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue to report a bug or suggest a feature.
 
+## 📊 Database
+
+The application uses PostgreSQL with a comprehensive security model:
+
+- **Persistent Storage:** All data is stored in PostgreSQL with proper relationships and constraints
+- **Audit Trail:** All tables include audit fields (createdAt, updatedAt, createdBy, updatedBy)
+- **Two-User Security:** Separate DDL and DML users prevent schema modifications at runtime
+- **Cascading Rules:** Properly configured foreign key relationships with appropriate cascade behaviors
+- **Migration Management:** Flyway handles all schema versioning and migrations
+
+See [DATABASE_INTEGRATION.md](DATABASE_INTEGRATION.md) for complete documentation on:
+- Database architecture and schema
+- Security model and user roles
+- Setup and configuration
+- Migration management
+- Troubleshooting and best practices
+
 ## 🔮 Future Work
 
-- **Database Integration:** The current implementation uses an in-memory database for demonstration purposes. The next step is to integrate a persistent database like PostgreSQL with Flyway for database migrations.
+- **Performance Optimization:** Implement caching strategies and query optimization
+- **Read Replicas:** Set up database read replicas for horizontal scaling
+- **Full-text Search:** Add Elasticsearch for advanced paper search capabilities
+- **File Storage:** Consider moving large files to object storage (S3, MinIO) for better scalability
